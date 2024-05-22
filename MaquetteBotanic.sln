@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaquetteBotanic", "MaquetteBotanic.csproj", "{1AB66B20-D1C9-49B1-A8FE-52AAB8ABD799}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AB66B20-D1C9-49B1-A8FE-52AAB8ABD799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AB66B20-D1C9-49B1-A8FE-52AAB8ABD799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AB66B20-D1C9-49B1-A8FE-52AAB8ABD799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AB66B20-D1C9-49B1-A8FE-52AAB8ABD799}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {47BF9C21-CF6B-49BE-AFB1-72CC92F48BC1}
+	EndGlobalSection
+EndGlobal
