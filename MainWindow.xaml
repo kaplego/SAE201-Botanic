@@ -5,9 +5,40 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MaquetteBotanic"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
+    Title="Gestion des commandes | Botanic"
     Width="800"
     Height="450"
+    MinHeight="410"
     mc:Ignorable="d">
-    <Grid />
+    <StackPanel>
+        <Grid
+            Grid.ColumnSpan="2"
+            Height="45"
+            Background="#FF00634C">
+            <Image
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Source="/img/logo.png"
+                Stretch="Uniform" />
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="20,20,20,20">
+                <TextBlock FontWeight="Bold" TextAlignment="Center">Commander un produit de la centrale</TextBlock>
+                <Label Content="Rechercher" />
+                <TextBox Text="TextBox" TextWrapping="Wrap" />
+
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Separator
+                    Width="1"
+                    HorizontalAlignment="Left"
+                    Background="#FF00634C"
+                    Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </Window>
