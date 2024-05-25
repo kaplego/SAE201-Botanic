@@ -6,24 +6,54 @@
     xmlns:local="clr-namespace:MaquetteBotanic"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="Gestion des commandes | Botanic"
-    Width="1000"
+    Width="1100"
     Height="700"
-    MinWidth="600"
     MinHeight="410"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
-        <Style x:Key="ButtonsCategories" TargetType="Button">
-            <Setter Property="Margin" Value="4,0,4,0" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Padding" Value="6,2" />
+		<Style x:Key="ButtonsCategories" TargetType="Button">
+			<Setter Property="Margin" Value="4,0,4,0" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Padding" Value="6,2" />
+			<Setter Property="Background" Value="#FFD9D9D9" />
+			<Setter Property="Foreground" Value="#FF393939" />
+			<Setter Property="FontSize" Value="14" />
+			<Style.Resources>
+				<Style TargetType="Border">
+					<Setter Property="CornerRadius" Value="4,4,0,0" />
+				</Style>
+			</Style.Resources>
+		</Style>
+		<Style x:Key="TBkProduit" TargetType="TextBlock">
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="HorizontalAlignment" Value="Left" />
+			<Setter Property="MaxHeight" Value="30" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+        </Style>
+        <Style x:Key="TBkPrixProduit" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="MaxHeight" Value="30" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+            <Setter Property="Foreground" Value="#FF00634C" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style x:Key="TBxQteProduit" TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+            <Setter Property="BorderBrush" Value="#FFD9D9D9" />
             <Setter Property="Background" Value="#FFD9D9D9" />
-            <Setter Property="Foreground" Value="#FF393939" />
-            <Setter Property="FontSize" Value="14" />
             <Style.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4,4,0,0" />
+                    <Setter Property="CornerRadius" Value="2" />
                 </Style>
             </Style.Resources>
+        </Style>
+        <Style x:Key="SepProduits" TargetType="Separator">
+            <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
     </Window.Resources>
     <StackPanel>
@@ -105,78 +135,65 @@
                         <ComboBoxItem Content="Grand" />
                     </ComboBox>
                 </Grid>
-                <Grid x:Name="gridProduits" MinHeight="60">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="15*" />
-                        <ColumnDefinition Width="20*" />
-                        <ColumnDefinition Width="10*" />
-                        <ColumnDefinition Width="40*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Quantité</TextBlock>
-                    <TextBlock
-                        Grid.Column="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        Nom
-                    </TextBlock>
-                    <TextBlock
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        Prix
-                    </TextBlock>
-                    <TextBlock
-                        Grid.Column="3"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        Description
-                    </TextBlock>
-                    <Separator Grid.ColumnSpan="4" VerticalAlignment="Bottom" />
+                
+                <!--  Produits  -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <Grid x:Name="gridProduits" MinHeight="80" MinWidth="400" Visibility="Hidden">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15*" />
+                            <ColumnDefinition Width="20*" />
+                            <ColumnDefinition Width="10*" />
+                            <ColumnDefinition Width="40*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Quantité</TextBlock>
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            Nom
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            Prix
+                        </TextBlock>
+                        <TextBlock
+                            Grid.Column="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            Description
+                        </TextBlock>
+                        <Separator Grid.ColumnSpan="4" VerticalAlignment="Bottom" />
 
-                    <CheckBox
-                        x:Name="achatProduit_1"
-                        Grid.Row="1"
-                        MaxHeight="30"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Click="AchatProduit_Click" />
-                    <TextBox
-                        x:Name="qteProduit_1"
-                        Grid.Row="1"
-                        Margin="20,0,10,0"
-                        VerticalAlignment="Center"
-                        Visibility="Hidden" />
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        MaxHeight="30"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="Produit 1"
-                        TextWrapping="Wrap" />
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="19.99 €"
-                        TextWrapping="Wrap" />
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="3"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="Description du produit 1"
-                        TextWrapping="Wrap" />
-                    <Separator
-                        Grid.Row="1"
-                        Grid.ColumnSpan="4"
-                        VerticalAlignment="Bottom" />
-                </Grid>
+                        <TextBox
+                            Grid.Row="1"
+                            Style="{StaticResource TBxQteProduit}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="Produit 1"
+                            Style="{StaticResource TBkProduit}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Text="19.99 €"
+                            Style="{StaticResource TBkPrixProduit}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Text="Description du produit 1"
+                            Style="{StaticResource TBkProduit}" />
+                        <Separator
+                            Grid.Row="1"
+                            Grid.ColumnSpan="4"
+                            VerticalAlignment="Bottom" />
+                    </Grid>
+                </ScrollViewer>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Separator
