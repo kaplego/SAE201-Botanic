@@ -85,6 +85,9 @@ namespace MaquetteBotanic
         public Categorie? categorie = null;
         public SousCategorie? sousCategorie = null;
 
+        public Produit.CouleurProduit? filtreCouleur = null;
+        public Produit.TailleProduit? filtreTaille = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -105,53 +108,20 @@ namespace MaquetteBotanic
                 btnsCategories.Children.Add(btn);
                 i++;
             }
+
+            foreach (Produit.CouleurProduit couleur in Enum.GetValues(typeof(Produit.CouleurProduit)))
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = couleur.ToString();
+                cbCouleur.Items.Add(item);
+            }
+            foreach (Produit.TailleProduit taille in Enum.GetValues(typeof(Produit.TailleProduit)))
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = taille.ToString();
+                cbTaille.Items.Add(item);
+            }
         }
-
-        private void AjouterProduit(int id, Produit produit)
-        {
-            RowDefinition rowDef = new RowDefinition();
-
-            Separator sep = new Separator();
-            Grid.SetColumnSpan(sep, 4);
-            Grid.SetRow(sep, id - 1);
-            sep.Style = (Style)this.FindResource("SepProduits");
-
-            TextBox tbxQte = new TextBox();
-            tbxQte.Name = $"qteProduit_{id}";
-            Grid.SetRow(tbxQte, id);
-            tbxQte.Style = (Style)this.FindResource("TBxQteProduit");
-            tbxQte.Text = "0";
-
-            TextBlock tbkNom = new TextBlock();
-            tbkNom.Text = produit.Nom;
-            Grid.SetRow(tbkNom, id);
-            Grid.SetColumn(tbkNom, 1);
-            tbkNom.Style = (Style)this.FindResource("TBkProduit");
-
-            TextBlock tbkPrix = new TextBlock();
-            tbkPrix.Text = $"{produit.Prix:n2} €";
-            Grid.SetRow(tbkPrix, id);
-            Grid.SetColumn(tbkPrix, 2);
-            tbkPrix.Style = (Style)this.FindResource("TBkPrixProduit");
-
-            TextBlock tbkDesc = new TextBlock();
-            tbkDesc.Text = produit.Description;
-            Grid.SetRow(tbkDesc, id);
-            Grid.SetColumn(tbkDesc, 3);
-            tbkDesc.Style = (Style)this.FindResource("TBkProduit");
-
-            gridProduits.Children.Add(sep);
-            gridProduits.RowDefinitions.Add(rowDef);
-            gridProduits.Children.Add(tbxQte);
-            gridProduits.Children.Add(tbkNom);
-            gridProduits.Children.Add(tbkPrix);
-            gridProduits.Children.Add(tbkDesc);
-
-            gridProduits.Height += 30;
-        }
-
-        private void AjouterProduit(Produit produit)
-            => AjouterProduit(gridProduits.RowDefinitions.Count, produit);
 
         private void Categorie_Click(object sender, RoutedEventArgs e)
         {
@@ -212,16 +182,8 @@ namespace MaquetteBotanic
 
             gridFiltres.Visibility = Visibility.Visible;
 
-            gridProduits.Children.RemoveRange(4, gridProduits.Children.Count - 4);
-            gridProduits.RowDefinitions.RemoveRange(1, gridProduits.RowDefinitions.Count - 1);
-            gridProduits.Height = 30;
-
-            foreach (Produit produit in sousCategorie.Produits)
-            {
-                AjouterProduit(produit);
-            }
-
-            gridProduits.Visibility = Visibility.Visible;
+            dgProduits.ItemsSource = sousCategorie.Produits;
+            dgProduits.Visibility = Visibility.Visible;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -229,12 +191,35 @@ namespace MaquetteBotanic
             ComboBox cb = (ComboBox)sender;
             int index = cb.SelectedIndex;
 
-            if (index == 0)
+            ComboBoxItem item = (ComboBoxItem)cb.Items[index];
+            string? content = item.Content.ToString()!;
+
+            if (cb == cbCouleur)
+            {
+                if (item == cb.Items[0])
+                    filtreCouleur = null;
+                else
+                    filtreCouleur = (Produit.CouleurProduit)Enum.Parse(typeof(Produit.CouleurProduit), content);
+            }
+            else if (cb == cbTaille)
+            {
+                if (item == cb.Items[0])
+                    filtreTaille = null;
+                else
+                    filtreTaille = (Produit.TailleProduit)Enum.Parse(typeof(Produit.TailleProduit), content);
+            }
+
+            if (categorie == null || sousCategorie == null)
                 return;
 
-            ComboBoxItem item = (ComboBoxItem)cb.Items.GetItemAt(index);
-
-            MessageBox.Show(item.Content.ToString());
+            dgProduits.ItemsSource = sousCategorie.Produits.FindAll((p) =>
+            {
+                if (filtreCouleur != null && p.Couleur != filtreCouleur)
+                    return false;
+                if (filtreTaille != null && p.Taille != filtreTaille)
+                    return false;
+                return true;
+            }) ?? new List<Produit>();
         }
     }
 }

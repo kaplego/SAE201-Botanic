@@ -115,84 +115,39 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ComboBox
+                    <ComboBox x:Name="cbCouleur"
                         Margin="0,0,5,0"
                         SelectedIndex="0"
                         SelectionChanged="ComboBox_SelectionChanged">
-                        <ComboBoxItem Content="Filtrer par couleur" IsEnabled="False" />
-                        <ComboBoxItem Content="Rouge" />
-                        <ComboBoxItem Content="Bleu" />
-                        <ComboBoxItem Content="Vert" />
+                        <ComboBoxItem Content="Aucun filtre de couleur" />
                     </ComboBox>
-                    <ComboBox
+                    <ComboBox x:Name="cbTaille"
                         Grid.Column="1"
                         Margin="5,0,0,0"
                         SelectedIndex="0"
                         SelectionChanged="ComboBox_SelectionChanged">
-                        <ComboBoxItem Content="Filtrer par taille" IsEnabled="False" />
-                        <ComboBoxItem Content="Petit" />
-                        <ComboBoxItem Content="Moyen" />
-                        <ComboBoxItem Content="Grand" />
+                        <ComboBoxItem Content="Aucun filtre de taille" />
                     </ComboBox>
                 </Grid>
                 
                 <!--  Produits  -->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                    <Grid x:Name="gridProduits" MinHeight="80" MinWidth="400" Visibility="Hidden">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15*" />
-                            <ColumnDefinition Width="20*" />
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="40*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Quantité</TextBlock>
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                            Nom
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Column="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                            Prix
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Column="3"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                            Description
-                        </TextBlock>
-                        <Separator Grid.ColumnSpan="4" VerticalAlignment="Bottom" />
-
-                        <TextBox
-                            Grid.Row="1"
-                            Style="{StaticResource TBxQteProduit}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Text="Produit 1"
-                            Style="{StaticResource TBkProduit}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Text="19.99 €"
-                            Style="{StaticResource TBkPrixProduit}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="3"
-                            Text="Description du produit 1"
-                            Style="{StaticResource TBkProduit}" />
-                        <Separator
-                            Grid.Row="1"
-                            Grid.ColumnSpan="4"
-                            VerticalAlignment="Bottom" />
-                    </Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                    <DataGrid x:Name="dgProduits" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="NB Achat" MinWidth="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" IsReadOnly="True" MinWidth="100" />
+                            <DataGridTextColumn Header="Prix" Binding="{Binding Prix}" IsReadOnly="True" MinWidth="60" />
+                            <DataGridTextColumn Header="Couleur" Binding="{Binding Couleur}" IsReadOnly="True" MinWidth="50" />
+                            <DataGridTextColumn Header="Taille" Binding="{Binding Taille}" IsReadOnly="True" MinWidth="50" />
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True" MinWidth="125" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </ScrollViewer>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
