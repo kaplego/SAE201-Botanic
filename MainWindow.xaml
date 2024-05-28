@@ -13,80 +13,183 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.DataContext>
-        <local:ApplicationData x:Name="dataApp" />
+        <local:ApplicationData
+            x:Name="dataApp" />
     </Window.DataContext>
     <Window.Resources>
-		<Style x:Key="ButtonsCategories" TargetType="Button">
-			<Setter Property="Margin" Value="4,0,4,0" />
-			<Setter Property="BorderThickness" Value="0" />
-			<Setter Property="Padding" Value="6,2" />
-			<Setter Property="Background" Value="#FFD9D9D9" />
-			<Setter Property="Foreground" Value="#FF393939" />
-			<Setter Property="FontSize" Value="14" />
-			<Style.Resources>
-				<Style TargetType="Border">
-					<Setter Property="CornerRadius" Value="4,4,0,0" />
-				</Style>
-			</Style.Resources>
-        </Style>
-        <Style x:Key="ButtonsOK" TargetType="Button">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Padding" Value="8,6" />
-            <Setter Property="Background" Value="#FF00634C" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="14" />
+        <Style
+            x:Key="ButtonsCategories"
+            TargetType="Button">
+            <Setter
+                Property="Margin"
+                Value="4,0,4,0" />
+            <Setter
+                Property="BorderThickness"
+                Value="0" />
+            <Setter
+                Property="Padding"
+                Value="6,2" />
+            <Setter
+                Property="Background"
+                Value="#FFD9D9D9" />
+            <Setter
+                Property="Foreground"
+                Value="#FF393939" />
+            <Setter
+                Property="FontSize"
+                Value="14" />
             <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4" />
+                <Style
+                    TargetType="Border">
+                    <Setter
+                        Property="CornerRadius"
+                        Value="4,4,0,0" />
                 </Style>
             </Style.Resources>
         </Style>
-        <Style x:Key="TBkProduit" TargetType="TextBlock">
-			<Setter Property="VerticalAlignment" Value="Center" />
-			<Setter Property="HorizontalAlignment" Value="Left" />
-			<Setter Property="MaxHeight" Value="30" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="Margin" Value="5,0,5,0" />
-        </Style>
-        <Style x:Key="TBkPrixProduit" TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="HorizontalAlignment" Value="Right" />
-            <Setter Property="MaxHeight" Value="30" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="Margin" Value="5,0,5,0" />
-            <Setter Property="Foreground" Value="#FF00634C" />
-            <Setter Property="FontWeight" Value="Bold" />
-        </Style>
-        <Style x:Key="TBxQteProduit" TargetType="TextBox">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="5,0,5,0" />
-            <Setter Property="BorderBrush" Value="#FFD9D9D9" />
-            <Setter Property="Background" Value="#FFD9D9D9" />
+        <Style
+            x:Key="ButtonsOK"
+            TargetType="Button">
+            <Setter
+                Property="BorderThickness"
+                Value="0" />
+            <Setter
+                Property="Padding"
+                Value="8,6" />
+            <Setter
+                Property="Background"
+                Value="#FF00634C" />
+            <Setter
+                Property="Foreground"
+                Value="White" />
+            <Setter
+                Property="FontSize"
+                Value="14" />
             <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="2" />
+                <Style
+                    TargetType="Border">
+                    <Setter
+                        Property="CornerRadius"
+                        Value="4" />
                 </Style>
             </Style.Resources>
         </Style>
-        <Style x:Key="TBxDefault" TargetType="TextBox">
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="Margin" Value="0,5,0,5" />
-            <Setter Property="Padding" Value="8,4" />
-            <Setter Property="BorderBrush" Value="#FF00634C" />
-            <Setter Property="Background" Value="#FFE6E6E6" />
-            <Setter Property="Foreground" Value="#FF808080" />
+        <Style
+            x:Key="TBkProduit"
+            TargetType="TextBlock">
+            <Setter
+                Property="VerticalAlignment"
+                Value="Center" />
+            <Setter
+                Property="HorizontalAlignment"
+                Value="Left" />
+            <Setter
+                Property="MaxHeight"
+                Value="30" />
+            <Setter
+                Property="TextWrapping"
+                Value="Wrap" />
+            <Setter
+                Property="Margin"
+                Value="5,0,5,0" />
+        </Style>
+        <Style
+            x:Key="TBkPrixProduit"
+            TargetType="TextBlock">
+            <Setter
+                Property="VerticalAlignment"
+                Value="Center" />
+            <Setter
+                Property="HorizontalAlignment"
+                Value="Right" />
+            <Setter
+                Property="MaxHeight"
+                Value="30" />
+            <Setter
+                Property="TextWrapping"
+                Value="Wrap" />
+            <Setter
+                Property="Margin"
+                Value="5,0,5,0" />
+            <Setter
+                Property="Foreground"
+                Value="#FF00634C" />
+            <Setter
+                Property="FontWeight"
+                Value="Bold" />
+        </Style>
+        <Style
+            x:Key="TBxQteProduit"
+            TargetType="TextBox">
+            <Setter
+                Property="VerticalAlignment"
+                Value="Center" />
+            <Setter
+                Property="Margin"
+                Value="5,0,5,0" />
+            <Setter
+                Property="BorderBrush"
+                Value="#FFD9D9D9" />
+            <Setter
+                Property="Background"
+                Value="#FFD9D9D9" />
             <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4" />
+                <Style
+                    TargetType="Border">
+                    <Setter
+                        Property="CornerRadius"
+                        Value="2" />
                 </Style>
             </Style.Resources>
         </Style>
-        <Style x:Key="SepProduits" TargetType="Separator">
-            <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Style
+            x:Key="TBxDefault"
+            TargetType="TextBox">
+            <Setter
+                Property="VerticalAlignment"
+                Value="Stretch" />
+            <Setter
+                Property="Margin"
+                Value="0,5,0,5" />
+            <Setter
+                Property="Padding"
+                Value="8,4" />
+            <Setter
+                Property="BorderBrush"
+                Value="#FF00634C" />
+            <Setter
+                Property="Background"
+                Value="#FFE6E6E6" />
+            <Style.Resources>
+                <Style
+                    TargetType="Border">
+                    <Setter
+                        Property="CornerRadius"
+                        Value="4" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style
+            x:Key="SepProduits"
+            TargetType="Separator">
+            <Setter
+                Property="VerticalAlignment"
+                Value="Bottom" />
         </Style>
     </Window.Resources>
-    <StackPanel>
-        <Grid
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="45" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
             Grid.ColumnSpan="2"
             Height="45"
             Background="#FF00634C">
@@ -94,14 +197,16 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Source="/img/logo.png"
-                Stretch="Uniform" />
-        </Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel Margin="20,20,20,20">
+                Stretch="Uniform"
+                MaxHeight="45" />
+        </StackPanel>
+
+        <ScrollViewer
+            Grid.Row="1"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel
+                Margin="20,20,20,20"
+                Grid.Row="1">
                 <TextBlock
                     FontSize="18"
                     FontWeight="Bold"
@@ -111,14 +216,34 @@
                 </TextBlock>
 
                 <!--  Catégories  -->
-                <StackPanel x:Name="panelCategories" Margin="0,10,0,0">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <StackPanel x:Name="btnsCategories" Orientation="Horizontal">
-                            <Button Content="Mobilier" Style="{StaticResource ButtonsCategories}" Margin="0,0,5,0" />
-                            <Button Content="Potager" Style="{StaticResource ButtonsCategories}" />
-                            <Button x:Name="btnJardin" Content="Jardin" Style="{StaticResource ButtonsCategories}" Click="btnJardin_Click" />
-                            <Button Content="Balcon &amp; Terrasse" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Maison" Style="{StaticResource ButtonsCategories}" Margin="5,0,0,0" />
+                <StackPanel
+                    x:Name="panelCategories"
+                    Margin="0,10,0,0">
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Disabled">
+                        <StackPanel
+                            x:Name="btnsCategories"
+                            Orientation="Horizontal">
+                            <Button
+                                Content="Mobilier"
+                                Style="{StaticResource ButtonsCategories}"
+                                Margin="0,0,5,0" />
+                            <Button
+                                Content="Potager"
+                                Style="{StaticResource ButtonsCategories}" />
+                            <Button
+                                x:Name="btnJardin"
+                                Content="Jardin"
+                                Style="{StaticResource ButtonsCategories}"
+                                Click="btnJardin_Click" />
+                            <Button
+                                Content="Balcon &amp; Terrasse"
+                                Style="{StaticResource ButtonsCategories}" />
+                            <Button
+                                Content="Maison"
+                                Style="{StaticResource ButtonsCategories}"
+                                Margin="5,0,0,0" />
                         </StackPanel>
                     </ScrollViewer>
                     <Rectangle
@@ -126,19 +251,40 @@
                         Fill="#FFD9D9D9"
                         StrokeThickness="0" />
                 </StackPanel>
+
                 <!--  Sous-catégories  -->
                 <StackPanel
                     x:Name="panelSousCategories"
                     Margin="0,10,0,0"
                     Visibility="Collapsed">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <StackPanel x:Name="btnsSousCategories" Orientation="Horizontal">
-                            <Button x:Name="btnPlantes" Content="Plantes" Style="{StaticResource ButtonsCategories}" Margin="0,0,5,0" Click="btnPlantes_Click" />
-                            <Button Content="Semences" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Entretien" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Arrosage" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Décoration" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Biodiversité" Style="{StaticResource ButtonsCategories}" Margin="5,0,0,0" />
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Disabled">
+                        <StackPanel
+                            x:Name="btnsSousCategories"
+                            Orientation="Horizontal">
+                            <Button
+                                x:Name="btnPlantes"
+                                Content="Plantes"
+                                Style="{StaticResource ButtonsCategories}"
+                                Margin="0,0,5,0"
+                                Click="btnPlantes_Click" />
+                            <Button
+                                Content="Semences"
+                                Style="{StaticResource ButtonsCategories}" />
+                            <Button
+                                Content="Entretien"
+                                Style="{StaticResource ButtonsCategories}" />
+                            <Button
+                                Content="Arrosage"
+                                Style="{StaticResource ButtonsCategories}" />
+                            <Button
+                                Content="Décoration"
+                                Style="{StaticResource ButtonsCategories}" />
+                            <Button
+                                Content="Biodiversité"
+                                Style="{StaticResource ButtonsCategories}"
+                                Margin="5,0,0,0" />
                         </StackPanel>
                     </ScrollViewer>
                     <Rectangle
@@ -156,35 +302,67 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="cbCouleur"
+                    <ComboBox
+                        x:Name="cbCouleur"
                         Margin="0,0,5,0"
                         SelectedIndex="0">
-                        <ComboBoxItem Content="Aucun filtre de couleur" />
+                        <ComboBoxItem
+                            Content="Aucun filtre de couleur" />
                     </ComboBox>
-                    <ComboBox x:Name="cbTaille"
+                    <ComboBox
+                        x:Name="cbTaille"
                         Grid.Column="1"
                         Margin="5,0,0,0"
                         SelectedIndex="0">
-                        <ComboBoxItem Content="Aucun filtre de taille" />
+                        <ComboBoxItem
+                            Content="Aucun filtre de taille" />
                     </ComboBox>
                 </Grid>
-                
+
                 <!--  Produits  -->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,10,0,0">
-                    <DataGrid x:Name="dgProduits" AutoGenerateColumns="False" Visibility="Collapsed" ItemsSource="{Binding TemplateProduits}">
+                <ScrollViewer
+                    VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto"
+                    Margin="0,10,0,0">
+                    <DataGrid
+                        x:Name="dgProduits"
+                        AutoGenerateColumns="False"
+                        Visibility="Collapsed"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding TemplateProduits}">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Quantité" MinWidth="60">
+                            <DataGridTemplateColumn
+                                Header="Quantité"
+                                MinWidth="60">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBox Style="{StaticResource TBxQteProduit}" Text="0" />
+                                        <TextBox
+                                            x:Name="tbxQuantite"
+                                            Style="{StaticResource TBxQteProduit}"
+                                            Text="{Binding Path=Quantite, Mode=TwoWay}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" IsReadOnly="True" MinWidth="100" />
-                            <DataGridTextColumn Header="Prix" Binding="{Binding Prix}" IsReadOnly="True" MinWidth="60" />
-                            <DataGridTextColumn Header="Couleur" Binding="{Binding Couleur}" IsReadOnly="True" MinWidth="50" />
-                            <DataGridTextColumn Header="Taille" Binding="{Binding Taille}" IsReadOnly="True" MinWidth="50" />
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True" MinWidth="125" />
+                            <DataGridTextColumn
+                                Header="Nom"
+                                Binding="{Binding Nom}"
+                                MinWidth="100" />
+                            <DataGridTextColumn
+                                Header="Prix"
+                                Binding="{Binding Prix}"
+                                MinWidth="60" />
+                            <DataGridTextColumn
+                                Header="Couleur"
+                                Binding="{Binding Couleur}"
+                                MinWidth="50" />
+                            <DataGridTextColumn
+                                Header="Taille"
+                                Binding="{Binding Taille}"
+                                MinWidth="50" />
+                            <DataGridTextColumn
+                                Header="Description"
+                                Binding="{Binding Description}"
+                                MinWidth="125" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>
@@ -196,15 +374,23 @@
                     Foreground="#FF00634C"
                     Margin="0,10,0,10"
                     Visibility="Collapsed">
-                    Total : 1499.90 €
+                Total : 0 produits pour 0.00 €
                 </TextBlock>
                 <Button
                     x:Name="btnAcheter"
                     Style="{StaticResource ButtonsOK}"
-                    Content="Commander 10 produits"
+                    Content="Commander 0 produits"
+                    IsEnabled="False"
                     Visibility="Collapsed" />
             </StackPanel>
-            <StackPanel Grid.Column="1" Margin="20,20,20,20">
+        </ScrollViewer>
+        <ScrollViewer
+            Grid.Column="1"
+            Grid.Row="1"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel
+                Margin="20,20,20,20"
+                MinHeight="365">
                 <Separator
                     Width="1"
                     HorizontalAlignment="Left"
@@ -225,26 +411,67 @@
                     Produits déjà achetés
                 </TextBlock>
 
-                <Label Content="Nom du _produit" Target="{Binding ElementName=nomProduit}" Padding="0,0,0,5" />
-                <TextBox x:Name="nomProduit" Style="{StaticResource TBxDefault}" />
-                <Label Content="Nom du _fournisseur" Target="{Binding ElementName=nomFournisseur}" Padding="0,5"/>
-                <TextBox x:Name="nomFournisseur" Style="{StaticResource TBxDefault}" />
+                <Label
+                    Content="Nom du _produit"
+                    Target="{Binding ElementName=nomProduit}"
+                    Padding="0,0,0,5" />
+                <TextBox
+                    x:Name="nomProduit"
+                    Style="{StaticResource TBxDefault}" />
+                <Label
+                    Content="Nom du _fournisseur"
+                    Target="{Binding ElementName=nomFournisseur}"
+                    Padding="0,5" />
+                <TextBox
+                    x:Name="nomFournisseur"
+                    Style="{StaticResource TBxDefault}" />
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,10,0,0">
-                    <DataGrid x:Name="dgProduitsLocaux" AutoGenerateColumns="False" ItemsSource="{Binding TemplateProduits}">
+                <ScrollViewer
+                    VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto"
+                    Margin="0,10,0,0">
+                    <DataGrid
+                        x:Name="dgProduitsLocaux"
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding TemplateProduits}">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Quantité" MinWidth="60">
+                            <DataGridTemplateColumn
+                                Header="Quantité"
+                                MinWidth="60">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBox Style="{StaticResource TBxQteProduit}" Text="0" />
+                                        <TextBox
+                                            x:Name="tbxQuantiteLocal"
+                                            Style="{StaticResource TBxQteProduit}"
+                                            Text="{Binding Path=Quantite, Mode=TwoWay}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" IsReadOnly="True" MinWidth="100" />
-                            <DataGridTextColumn Header="Prix" Binding="{Binding Prix}" IsReadOnly="True" MinWidth="60" />
-                            <DataGridTextColumn Header="Couleur" Binding="{Binding Couleur}" IsReadOnly="True" MinWidth="50" />
-                            <DataGridTextColumn Header="Taille" Binding="{Binding Taille}" IsReadOnly="True" MinWidth="50" />
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True" MinWidth="125" />
+                            <DataGridTextColumn
+                                Header="Nom"
+                                Binding="{Binding Nom}"
+                                IsReadOnly="True"
+                                MinWidth="100" />
+                            <DataGridTextColumn
+                                Header="Prix"
+                                Binding="{Binding Prix}"
+                                IsReadOnly="True"
+                                MinWidth="60" />
+                            <DataGridTextColumn
+                                Header="Couleur"
+                                Binding="{Binding Couleur}"
+                                IsReadOnly="True"
+                                MinWidth="50" />
+                            <DataGridTextColumn
+                                Header="Taille"
+                                Binding="{Binding Taille}"
+                                IsReadOnly="True"
+                                MinWidth="50" />
+                            <DataGridTextColumn
+                                Header="Description"
+                                Binding="{Binding Description}"
+                                IsReadOnly="True"
+                                MinWidth="125" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>
@@ -254,13 +481,72 @@
                     FontWeight="Bold"
                     Foreground="#FF00634C"
                     Margin="0,10,0,10">
-                    Total : 1499.90 €
+                    Total : 0 produits pour 0,00 €
                 </TextBlock>
                 <Button
                     x:Name="btnAcheterLocal"
                     Style="{StaticResource ButtonsOK}"
-                    Content="Commander 10 produits" />
+                    IsEnabled="False"
+                    Content="Commander 0 produits" />
+
+                <TextBlock
+                    Margin="0,10,0,10"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    TextWrapping="Wrap">
+                    Créer un produit
+                </TextBlock>
+
+                <Label
+                    Content="Nom du _produit"
+                    Target="{Binding ElementName=nomNouveauProduit}"
+                    Padding="0,0,0,5" />
+                <TextBox
+                    x:Name="nomNouveauProduit"
+                    Style="{StaticResource TBxDefault}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="5*" />
+                        <ColumnDefinition
+                            Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Grid.Column="0"
+                        Margin="0,0,5,0">
+                        <Label
+                            Content="_Code du produit"
+                            Target="{Binding ElementName=nomNouveauCode}"
+                            Padding="0,0,0,5" />
+                        <TextBox
+                            x:Name="nomNouveauCode"
+                            Style="{StaticResource TBxDefault}" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="1"
+                        Margin="5,0,0,0">
+                        <Label
+                            Content="Pri_x"
+                            Target="{Binding ElementName=nomNouveauPrix}"
+                            Padding="0,0,0,5" />
+                        <TextBox
+                            x:Name="nomNouveauPrix"
+                            Style="{StaticResource TBxDefault}" />
+                    </StackPanel>
+                </Grid>
+                <Label
+                    Content="Nom du _fournisseur"
+                    Target="{Binding ElementName=nomNouveauFournisseur}"
+                    Padding="0,5" />
+                <TextBox
+                    x:Name="nomNouveauFournisseur"
+                    Style="{StaticResource TBxDefault}" />
+
+                <Button
+                    x:Name="btnCreerProduit"
+                    Style="{StaticResource ButtonsOK}"
+                    Content="Créer le produit" />
             </StackPanel>
-        </Grid>
-    </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Window>
