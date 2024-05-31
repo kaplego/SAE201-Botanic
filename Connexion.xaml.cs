@@ -17,20 +17,21 @@ namespace MaquetteBotanic
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Connexion : Window
     {
-        public MainWindow()
+        public Connexion()
         {
-            Connexion connexion = new Connexion();
-            bool ok = connexion.ShowDialog() ?? false;
-
-            if (!ok)
-            {
-                this.Close();
-                return;
-            }
-            
             InitializeComponent();
+        }
+
+        private void btnQuitter_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+        }
+
+        private void btnValider_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
         }
     }
 }
