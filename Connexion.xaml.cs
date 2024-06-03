@@ -19,6 +19,8 @@ namespace MaquetteBotanic
     /// </summary>
     public partial class Connexion : Window
     {
+        public const int MAX_USERNAME_LENGTH = 100;
+        
         public Connexion()
         {
             InitializeComponent();
@@ -31,6 +33,38 @@ namespace MaquetteBotanic
 
         private void btnValider_Click(object sender, RoutedEventArgs e)
         {
+            string usr = tbxUsername.Text;
+            string pwd = tbxPassword.Password;
+
+            if (string.IsNullOrEmpty(usr) || usr.Length > MAX_USERNAME_LENGTH || string.IsNullOrEmpty(pwd))
+            {
+                MessageBox.Show(
+                    "Le nom d'utilisateur ou le mot de passe est incorrect.",
+                    "Erreur",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                return;
+            }
+            
+            DataAccess.username = usr;
+            DataAccess.password = pwd;
+
+            try
+            {
+                DataAccess.Instance?.Test();
+            }
+            catch
+            {
+                MessageBox.Show(
+                    "Le nom d'utilisateur ou le mot de passe est incorrect.",
+                    "Erreur",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                return;
+            }
+            
             this.DialogResult = true;
         }
     }
