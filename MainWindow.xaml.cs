@@ -17,7 +17,7 @@ namespace MaquetteBotanic
                 this.Close();
                 return;
             }
-            
+
             InitializeComponent();
         }
     }

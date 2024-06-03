@@ -54,8 +54,7 @@ public class DataAccess
         }
         catch (Exception e)
         {
-            Console.WriteLine("pb à la connexion : " + e);
-            ErrorMsgBox();
+            throw new Exception("pb à la connexion : " + e);
         }
     }
     public void DeconnexionBD()
@@ -80,7 +79,6 @@ public class DataAccess
         }
         catch (Exception e)
         {
-            Console.WriteLine("pb de test : " + e.ToString());
             ErrorMsgBox();
             return false;
         }
