@@ -1,26 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MaquetteBotanic
 {
-    public class ProduitAchat : Produit
+    public class ProduitAchat
     {
-        private int quantite;
+        private Produit leProduit;
+        private int quantite = 0;
 
+        public Produit LeProduit
+        {
+            get => this.leProduit;
+            set => this.leProduit = value;
+        }
         public int Quantite { get => this.quantite; set => this.quantite = value; }
 
-        public ProduitAchat(string nom, double prix, string description, CouleurProduit couleur, TailleProduit taille)
-            : base(nom, prix, description, couleur, taille)
+        private ProduitAchat(Produit produit)
         {
-            this.Quantite = 0;
+            this.leProduit = produit;
         }
 
-        public ProduitAchat(Produit produit)
-            : this(produit.Nom, produit.Prix, produit.Description, produit.Couleur, produit.Taille)
-        { }
-
-        public static List<ProduitAchat> FromListProduit(List<Produit> liste)
+        public static ObservableCollection<ProduitAchat> FromListProduit(ObservableCollection<Produit> liste)
         {
-            List<ProduitAchat> listeAchat = new List<ProduitAchat>();
+            ObservableCollection<ProduitAchat> listeAchat = new ObservableCollection<ProduitAchat>();
             foreach (Produit produit in liste)
             {
                 listeAchat.Add(new ProduitAchat(produit));
@@ -30,7 +32,7 @@ namespace MaquetteBotanic
 
         public double PrixTotal()
         {
-            return this.Quantite * this.Prix;
+            return this.Quantite * this.LeProduit.Prix;
         }
     }
 }
