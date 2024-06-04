@@ -12,6 +12,8 @@ namespace MaquetteBotanic
         private ObservableCollection<TypeProduit> typesProduit;
         private ObservableCollection<Categorie> categories;
         private ObservableCollection<ProduitAchat> produits;
+        private ObservableCollection<Categorie> categories;
+        private ObservableCollection<TypeProduit> typesProduits;
 
         public static ApplicationData Instance {
             get {
@@ -23,6 +25,8 @@ namespace MaquetteBotanic
         public ObservableCollection<TypeProduit> TypesProduit { get => this.typesProduit; set => this.typesProduit = value; }
         public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
         public ObservableCollection<ProduitAchat> Produits { get => this.produits; set => this.produits = value; }
+        public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
+        public ObservableCollection<TypeProduit> TypesProduits { get => typesProduits; set => typesProduits = value; }
 
         private ApplicationData()
         {

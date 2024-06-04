@@ -19,6 +19,9 @@ namespace MaquetteBotanic
             }
 
             InitializeComponent();
+
+            Commander cmd = new Commander();
+            cmd.Show();
         }
     }
 }
