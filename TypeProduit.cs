@@ -26,8 +26,8 @@ namespace MaquetteBotanic
         public static ObservableCollection<TypeProduit> Read()
         {
             ObservableCollection<TypeProduit> lesTypes = new ObservableCollection<TypeProduit>();
-            string sql = "SELECT num_type, designation_type FROM categorie";
-            DataTable dt = DataAccess.Instance.GetData(sql);
+            string sql = "SELECT num_type, designation_type FROM type_produit";
+            DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
                 TypeProduit nouveau = new TypeProduit(

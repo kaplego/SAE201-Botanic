@@ -44,7 +44,7 @@ namespace MaquetteBotanic
         {
             ObservableCollection<Produit> lesProduits = new ObservableCollection<Produit>();
             string sql = "SELECT num_produit, num_categorie, nom_produit, couleur_produit, taille_produit, description_produit, prix_vente FROM produit";
-            DataTable dt = DataAccess.Instance!.GetData(sql);
+            DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
                 Produit nouveau = new Produit(
