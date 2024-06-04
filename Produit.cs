@@ -12,7 +12,6 @@ namespace MaquetteBotanic
         private string couleur;
         private string taille;
         private int numCategorie;
-        private int numMagasin;
 
         public int Id { get => id; set => id = value; }
         public string Nom { get => nom; set => nom = value; }
@@ -25,13 +24,8 @@ namespace MaquetteBotanic
             get => this.numCategorie;
             set => this.numCategorie = value;
         }
-        public int NumMagasin
-        {
-            get => this.numMagasin;
-            set => this.numMagasin = value;
-        }
 
-        public Produit(int id, string nom, double prix, string description, string couleur, string taille, int magasin)
+        public Produit(int id, string nom, double prix, string description, string couleur, string taille)
         {
             this.Id = id;
             this.Nom = nom;
@@ -39,7 +33,6 @@ namespace MaquetteBotanic
             this.Description = description;
             this.Couleur = couleur;
             this.Taille = taille;
-            this.NumMagasin = magasin;
         }
 
         public override string? ToString()
@@ -51,7 +44,7 @@ namespace MaquetteBotanic
         {
             ObservableCollection<Produit> lesProduits = new ObservableCollection<Produit>();
             string sql = "SELECT num_produit, num_categorie, nom_produit, couleur_produit, taille_produit, description_produit, prix_vente FROM produit";
-            DataTable dt = DataAccess.Instance!.GetData(sql);
+            DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
                 Produit nouveau = new Produit(
