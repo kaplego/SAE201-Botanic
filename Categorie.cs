@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 
@@ -8,7 +9,7 @@ namespace MaquetteBotanic
     {
         private int id;
         private string nom;
-        private int type;
+        private TypeProduit type;
 
         public int Id
         {
@@ -16,14 +17,14 @@ namespace MaquetteBotanic
             set => this.id = value;
         }
         public string Nom { get => this.nom; set => this.nom = value; }
-        public int Type { get => this.type; set => this.type = value; }
+        public TypeProduit Type { get => this.type; set => this.type = value; }
 
         public Categorie(string nom)
         {
             this.Nom = nom;
         }
         
-        public Categorie(int id, string nom, int type)
+        public Categorie(int id, string nom, TypeProduit type)
             : this(nom)
         {
             this.Id = id;
@@ -34,13 +35,17 @@ namespace MaquetteBotanic
         {
             ObservableCollection<Categorie> lesCategories = new ObservableCollection<Categorie>();
             string sql = "SELECT num_categorie, num_type, libelle_categorie FROM categorie";
-            DataTable dt = DataAccess.Instance.GetData(sql);
+            DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
+                TypeProduit? type = ApplicationData.Find(ApplicationData.Instance.TypesProduit, (i) => i.Id == int.Parse(res["num_type"].ToString()!));
+                if (type == null)
+                    throw new Exception("Le type produit n'existe pas.");
+
                 Categorie nouveau = new Categorie(
                     int.Parse(res["num_categorie"].ToString()!),
                     res["libelle_categorie"].ToString()!,
-                    int.Parse(res["num_type"].ToString()!)
+                    type
                 );
                 lesCategories.Add(nouveau);
             }
