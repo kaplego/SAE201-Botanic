@@ -12,9 +12,6 @@
     MinHeight="410"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Window.DataContext>
-        <local:ApplicationData x:Name="dataApp" />
-    </Window.DataContext>
     <Window.Resources>
         <Style x:Key="ButtonsCategories" TargetType="Button">
             <Setter Property="Margin" Value="4,0,4,0" />
