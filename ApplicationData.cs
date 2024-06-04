@@ -9,6 +9,7 @@ namespace MaquetteBotanic
         private ObservableCollection<ProduitAchat> produits;
         private ObservableCollection<Categorie> categories;
         private ObservableCollection<TypeProduit> typesProduits;
+        private ObservableCollection<Commande> commandes;
 
         public ObservableCollection<ProduitAchat> Produits { get => this.produits; set => this.produits = value; }
         public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
@@ -19,6 +20,7 @@ namespace MaquetteBotanic
             this.Produits = ProduitAchat.FromListProduit(Produit.Read());
             this.Categories = Categorie.Read();
             this.TypesProduits = TypeProduit.Read();
+            this.commandes = Commande.Read();
         }
     }
 }
