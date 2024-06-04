@@ -67,6 +67,7 @@
                 </Style>
             </Style.Resources>
         </Style>
+
         <Style x:Key="TBxDefault" TargetType="TextBox">
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Margin" Value="0,5,0,5" />
@@ -81,7 +82,15 @@
         </Style>
         <Style x:Key="SepProduits" TargetType="Separator">
             <Setter Property="VerticalAlignment" Value="Bottom" />
+
         </Style>
+        <Style x:Key="titleTemplate" TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="FontSize" Value="25" />
+
+        </Style>
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -90,7 +99,11 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="115*"/>
+
         </Grid.RowDefinitions>
         <DockPanel>
             <Menu Background="White" DockPanel.Dock="Top">
@@ -116,13 +129,20 @@
                 Stretch="Uniform" />
 
         </StackPanel>
+        <Label
+            Grid.Row="1"
+            Content="Liste des éléments"
+            Style="{StaticResource titleTemplate}" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="1"
+            Content="Editer un element"
+            Style="{StaticResource titleTemplate}" />
         <DataGrid
             Grid.Row="1"
-            Grid.ColumnSpan="2"
             Height="100"
-            VerticalAlignment="Center"
             d:ItemsSource="{d:SampleData ItemCount=5}"
-            SelectionChanged="DataGrid_SelectionChanged" />
+             Margin="0,43,0,0" Grid.RowSpan="2" />
 
     </Grid>
 

@@ -33,10 +33,5 @@ namespace MaquetteBotanic
             mainWindow.Show();
             this.Close();
         }
-
-        private void DataGrid_SelectionChanged()
-        {
-
-        }
     }
 }
