@@ -12,6 +12,9 @@ namespace MaquetteBotanic
         private ObservableCollection<TypeProduit> typesProduit;
         private ObservableCollection<Categorie> categories;
         private ObservableCollection<ProduitAchat> produits;
+        private ObservableCollection<Commande> commandes;
+        private ObservableCollection<Fournisseur> fournisseurs;
+
 
         public static ApplicationData Instance {
             get {
@@ -23,12 +26,15 @@ namespace MaquetteBotanic
         public ObservableCollection<TypeProduit> TypesProduit { get => this.typesProduit; set => this.typesProduit = value; }
         public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
         public ObservableCollection<ProduitAchat> Produits { get => this.produits; set => this.produits = value; }
+        public ObservableCollection<Commande> Commandes { get => this.commandes; set => this.commandes = value; }
+        public ObservableCollection<Fournisseur> Fournisseurs { get => this.fournisseurs; set => this.fournisseurs = value; }
 
         private ApplicationData()
         {
             TypesProduit = TypeProduit.Read();
             Categories = Categorie.Read(TypesProduit);
             Produits = ProduitAchat.FromListProduit(Produit.Read(Categories));
+            Fournisseurs = Fournisseur.Read();
         }
 
         public delegate bool CallBack<T>(T item);
@@ -44,6 +50,7 @@ namespace MaquetteBotanic
                 }
             }
             return result;
+
         }
 
         public static ObservableCollection<T> Filter<T>(ObservableCollection<T> from, CallBack<T> callback)
