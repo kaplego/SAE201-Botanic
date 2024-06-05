@@ -17,9 +17,6 @@ namespace MaquetteBotanic
         private ObservableCollection<Utilisateur> utilisateurs;
         private ObservableCollection<ModeLivraison> modeLivraisons;
 
-
-
-
         public static ApplicationData Instance {
             get {
                 instance ??= new ApplicationData();
