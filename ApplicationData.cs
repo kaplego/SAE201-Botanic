@@ -15,12 +15,25 @@ namespace MaquetteBotanic
         public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
         public ObservableCollection<TypeProduit> TypesProduits { get => typesProduits; set => typesProduits = value; }
 
+        public ObservableCollection<Commande> Commandes
+        {
+            get
+            {
+                return this.commandes;
+            }
+
+            set
+            {
+                this.commandes = value;
+            }
+        }
+
         public ApplicationData()
         {
             this.Produits = ProduitAchat.FromListProduit(Produit.Read());
             this.Categories = Categorie.Read();
             this.TypesProduits = TypeProduit.Read();
-            this.commandes = Commande.Read();
+            this.Commandes = Commande.Read();
         }
     }
 }
