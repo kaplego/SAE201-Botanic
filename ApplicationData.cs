@@ -16,6 +16,8 @@ namespace MaquetteBotanic
         private ObservableCollection<Fournisseur> fournisseurs;
         private ObservableCollection<Utilisateur> utilisateurs;
         private ObservableCollection<ModeLivraison> modeLivraisons;
+        private ObservableCollection<Magasin> magasins;
+        private ObservableCollection<Fournit> produitsFournits;
 
         public static ApplicationData Instance {
             get {
@@ -31,6 +33,8 @@ namespace MaquetteBotanic
         public ObservableCollection<Fournisseur> Fournisseurs { get => this.fournisseurs; set => this.fournisseurs = value; }
         public ObservableCollection<Utilisateur> Utilisateurs { get => this.utilisateurs; set => this.utilisateurs = value; }
         public ObservableCollection<ModeLivraison> ModeLivraisons { get => this.modeLivraisons; set => this.modeLivraisons = value; }
+        public ObservableCollection<Magasin> Magasins { get => this.magasins; set => this.magasins = value; }
+        public ObservableCollection<Fournit> ProduitsFournits { get => this.produitsFournits; set => this.produitsFournits = value; }
 
         private ApplicationData()
         {
@@ -40,6 +44,12 @@ namespace MaquetteBotanic
             Fournisseurs = Fournisseur.Read();
             Utilisateurs = Utilisateur.Read();
             ModeLivraisons = ModeLivraison.Read();
+            Magasins = Magasin.Read();
+            ProduitsFournits = Fournit.Read(
+                Magasins,
+                Fournisseurs,
+                Produits
+            );
         }
 
         public delegate bool CallBack<T>(T item);
