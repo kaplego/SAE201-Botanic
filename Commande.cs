@@ -166,7 +166,7 @@ namespace MaquetteBotanic
         public int Update()
         {
             string sql = $"UPDATE commande" +
-                         $" SET num_magasin='{NumMagasin}', date_commande={DateCommande}," +
+                         $" SET date_commande={DateCommande}," +
                          $" date_livraison='{DateLivraison}'" +
                          $" WHERE num_commande={Id}";
             return DataAccess.Instance.SetData(sql);
