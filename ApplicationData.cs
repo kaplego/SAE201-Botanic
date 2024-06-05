@@ -27,8 +27,8 @@ namespace MaquetteBotanic
         private ApplicationData()
         {
             TypesProduit = TypeProduit.Read();
-            Categories = Categorie.Read();
-            Produits = ProduitAchat.FromListProduit(Produit.Read());
+            Categories = Categorie.Read(TypesProduit);
+            Produits = ProduitAchat.FromListProduit(Produit.Read(Categories));
         }
 
         public delegate bool CallBack<T>(T item);
@@ -41,6 +41,19 @@ namespace MaquetteBotanic
                 if (callback.Invoke(item))
                 {
                     result = item;
+                }
+            }
+            return result;
+        }
+
+        public static ObservableCollection<T> Filter<T>(ObservableCollection<T> from, CallBack<T> callback)
+        {
+            ObservableCollection<T> result = new ObservableCollection<T>();
+            foreach (T item in from)
+            {
+                if (callback.Invoke(item))
+                {
+                    result.Add(item);
                 }
             }
             return result;

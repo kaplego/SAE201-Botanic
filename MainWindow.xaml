@@ -116,23 +116,7 @@
                 <!--  Catégories  -->
                 <StackPanel x:Name="panelCategories" Margin="0,10,0,0">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <StackPanel x:Name="btnsCategories" Orientation="Horizontal">
-                            <Button
-                                Margin="0,0,5,0"
-                                Content="Mobilier"
-                                Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Potager" Style="{StaticResource ButtonsCategories}" />
-                            <Button
-                                x:Name="btnJardin"
-                                Click="btnJardin_Click"
-                                Content="Jardin"
-                                Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Balcon &amp; Terrasse" Style="{StaticResource ButtonsCategories}" />
-                            <Button
-                                Margin="5,0,0,0"
-                                Content="Maison"
-                                Style="{StaticResource ButtonsCategories}" />
-                        </StackPanel>
+                        <StackPanel x:Name="btnsTypes" Orientation="Horizontal" />
                     </ScrollViewer>
                     <Rectangle
                         Height="3"
@@ -146,22 +130,7 @@
                     Margin="0,10,0,0"
                     Visibility="Collapsed">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <StackPanel x:Name="btnsSousCategories" Orientation="Horizontal">
-                            <Button
-                                x:Name="btnPlantes"
-                                Margin="0,0,5,0"
-                                Click="btnPlantes_Click"
-                                Content="Plantes"
-                                Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Semences" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Entretien" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Arrosage" Style="{StaticResource ButtonsCategories}" />
-                            <Button Content="Décoration" Style="{StaticResource ButtonsCategories}" />
-                            <Button
-                                Margin="5,0,0,0"
-                                Content="Biodiversité"
-                                Style="{StaticResource ButtonsCategories}" />
-                        </StackPanel>
+                        <StackPanel x:Name="btnsCategories" Orientation="Horizontal" />
                     </ScrollViewer>
                     <Rectangle
                         Height="3"

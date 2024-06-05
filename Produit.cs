@@ -43,14 +43,14 @@ namespace MaquetteBotanic
             return this.Nom;
         }
 
-        public static ObservableCollection<Produit> Read()
+        public static ObservableCollection<Produit> Read(ObservableCollection<Categorie> categories)
         {
             ObservableCollection<Produit> lesProduits = new ObservableCollection<Produit>();
             string sql = "SELECT num_produit, num_categorie, nom_produit, couleur_produit, taille_produit, description_produit, prix_vente, num_categorie FROM produit";
             DataTable dt = DataAccess.Instance!.GetData(sql);
             foreach (DataRow res in dt.Rows)
             {
-                Categorie? cat = ApplicationData.Find(ApplicationData.Instance.Categories, (i) => i.Id == int.Parse(res["num_categorie"].ToString()!));
+                Categorie? cat = ApplicationData.Find(categories, (i) => i.Id == int.Parse(res["num_categorie"].ToString()!));
                 if (cat == null)
                     throw new Exception("La catégorie n'existe pas.");
 
