@@ -62,6 +62,7 @@
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
         <Style x:Key="TBxQteProduit" TargetType="TextBox">
+
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5,0,5,0" />
             <Setter Property="BorderBrush" Value="#FFD9D9D9" />
@@ -87,6 +88,29 @@
         <Style x:Key="SepProduits" TargetType="Separator">
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
+
+        <Style x:Key="TBxTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="TBxSubTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0,10,0,10" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+
+            <Setter Property="FontWeight" Value="SemiBold" />
+
+        </Style>
+        <Style x:Key="TBxText" TargetType="Label">
+            <Setter Property="Padding" Value="0,0,0,5" />
+
+        </Style>
+
+
+
     </Window.Resources>
 
 
@@ -95,8 +119,9 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="112*" />
+                    <ColumnDefinition Width="435*" />
+                    <ColumnDefinition Width="547*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45" />
@@ -105,7 +130,7 @@
 
 
                 <StackPanel
-                    Grid.ColumnSpan="2"
+                    Grid.ColumnSpan="3"
                     Height="45"
                     Background="#FF00634C">
                     <Image
@@ -117,13 +142,12 @@
 
                 </StackPanel>
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    VerticalScrollBarVisibility="Auto">
                     <StackPanel Grid.Row="1" Margin="20,20,20,20">
-                        <TextBlock
-                            FontSize="18"
-                            FontWeight="Bold"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap">
+                        <TextBlock Style="{StaticResource TBxTitle}">
                             Commander un produit de la centrale
                         </TextBlock>
 
@@ -272,7 +296,7 @@
                 </ScrollViewer>
                 <ScrollViewer
                     Grid.Row="1"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     VerticalScrollBarVisibility="Auto">
                     <StackPanel MinHeight="365" Margin="20,20,20,20">
                         <Separator
@@ -280,29 +304,21 @@
                             HorizontalAlignment="Left"
                             Background="#FF00634C"
                             Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        <TextBlock
-                            FontSize="18"
-                            FontWeight="Bold"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap">
+                        <TextBlock Style="{StaticResource TBxTitle}">
                             Commander un produit local
                         </TextBlock>
-                        <TextBlock
-                            Margin="0,10,0,10"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            TextWrapping="Wrap">
+                        <TextBlock Style="{StaticResource TBxSubTitle}">
                             Produits déjà achetés
                         </TextBlock>
 
                         <Label
-                            Padding="0,0,0,5"
                             Content="Nom du _produit"
+                            Style="{StaticResource TBxText}"
                             Target="{Binding ElementName=nomProduit}" />
                         <TextBox x:Name="nomProduit" Style="{StaticResource TBxDefault}" />
                         <Label
-                            Padding="0,5"
                             Content="Nom du _fournisseur"
+                            Style="{StaticResource TBxText}"
                             Target="{Binding ElementName=nomFournisseur}" />
                         <TextBox x:Name="nomFournisseur" Style="{StaticResource TBxDefault}" />
 
@@ -367,17 +383,13 @@
                             IsEnabled="False"
                             Style="{StaticResource ButtonsOK}" />
 
-                        <TextBlock
-                            Margin="0,10,0,10"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            TextWrapping="Wrap">
+                        <TextBlock Style="{StaticResource TBxSubTitle}">
                             Créer un produit
                         </TextBlock>
 
                         <Label
-                            Padding="0,0,0,5"
                             Content="Nom du _produit"
+                            Style="{StaticResource TBxText}"
                             Target="{Binding ElementName=nomNouveauProduit}" />
                         <TextBox x:Name="nomNouveauProduit" Style="{StaticResource TBxDefault}" />
                         <Grid>
@@ -387,8 +399,8 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="0,0,5,0">
                                 <Label
-                                    Padding="0,0,0,5"
                                     Content="_Code du produit"
+                                    Style="{StaticResource TBxText}"
                                     Target="{Binding ElementName=nomNouveauCode}" />
                                 <TextBox x:Name="nomNouveauCode" Style="{StaticResource TBxDefault}" />
                             </StackPanel>
@@ -401,8 +413,8 @@
                             </StackPanel>
                         </Grid>
                         <Label
-                            Padding="0,5"
                             Content="Nom du _fournisseur"
+                            Style="{StaticResource TBxText}"
                             Target="{Binding ElementName=nomNouveauFournisseur}" />
                         <TextBox x:Name="nomNouveauFournisseur" Style="{StaticResource TBxDefault}" />
 
@@ -424,16 +436,13 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="9*" />
-                    <RowDefinition Height="115*" />
+
+
 
                 </Grid.RowDefinitions>
                 <DockPanel>
                     <Menu Background="White" DockPanel.Dock="Top">
-                        <MenuItem
-                            x:Name="menuCommander"
-                            Click="menuCommander_Click"
-                            Header="_Commander" />
+                        <MenuItem x:Name="menuCommander" Header="_Commander" />
                         <MenuItem Header="_Visualiser" IsEnabled="False" />
                     </Menu>
 
@@ -450,24 +459,72 @@
                         VerticalAlignment="Center"
                         Source="/img/logo.png"
                         Stretch="Uniform" />
-
                 </StackPanel>
-                <Label
-                    Grid.Row="1"
-                    Content="Liste des éléments"
-                    Style="{StaticResource titleTemplate}" />
-                <Label
+                <StackPanel Grid.Row="1" Margin="20,20,20,20">
+                    <TextBlock
+                        Grid.Row="1"
+                        Margin="0,0,0,30"
+                        Style="{StaticResource TBxTitle}">
+                        Liste des commandes
+                    </TextBlock>
+
+                    <DataGrid
+                        Grid.Row="2"
+                        Grid.RowSpan="20"
+                        Grid.Column="0"
+                        Height="100"
+                        VerticalAlignment="Top"
+                        d:ItemsSource="{d:SampleData ItemCount=5}" />
+                </StackPanel>
+                <StackPanel
                     Grid.Row="1"
                     Grid.Column="1"
-                    Content="Editer un element"
-                    Style="{StaticResource titleTemplate}" />
-                <DataGrid
-                    Grid.Row="1"
-                    Grid.RowSpan="2"
-                    Height="100"
-                    Margin="0,43,0,0"
-                    d:ItemsSource="{d:SampleData ItemCount=5}" />
+                    Margin="20,20,20,20">
+                    <TextBlock Margin="0,0,0,30" Style="{StaticResource TBxTitle}">
+                        Visualiser une commande
+                    </TextBlock>
 
+                    <StackPanel>
+                        <Label Style="{StaticResource TBxText}">
+                            Date commande
+                        </Label>
+                        <TextBox Style="{StaticResource TBxDefault}">
+                            Date de la commande (à modifier programatically)
+                        </TextBox>
+                        <Label Style="{StaticResource TBxText}">
+                            Date livraison
+                        </Label>
+                        <TextBox Style="{StaticResource TBxDefault}">
+                            Date de la livraison (à modifier programatically)
+                        </TextBox>
+                        <Label Style="{StaticResource TBxText}">
+                            Mode livraison
+                        </Label>
+                        <TextBox Style="{StaticResource TBxDefault}">
+                            Mode de livraison (à modifier programatically)
+                        </TextBox>
+                        <Label Style="{StaticResource TBxText}">
+                            Liste des produits
+                        </Label>
+                        <DataGrid
+                            Height="100"
+                            VerticalAlignment="Top"
+                            d:ItemsSource="{d:SampleData ItemCount=5}" />
+                    </StackPanel>
+
+                </StackPanel>
+
+
+                <TextBox
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="120"
+                    Height="0"
+                    Margin="58,38,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Text="TextBox"
+                    TextWrapping="Wrap" />
             </Grid>
 
         </TabItem>
