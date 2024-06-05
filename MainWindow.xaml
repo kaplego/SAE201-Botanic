@@ -112,8 +112,6 @@
 
 
     </Window.Resources>
-
-
     <TabControl>
         <TabItem Header="Commander">
 
@@ -139,7 +137,6 @@
                         VerticalAlignment="Center"
                         Source="/img/logo.png"
                         Stretch="Uniform" />
-
                 </StackPanel>
 
                 <ScrollViewer

@@ -31,14 +31,14 @@ namespace MaquetteBotanic
             this.Type = type;
         }
         
-        public static ObservableCollection<Categorie> Read()
+        public static ObservableCollection<Categorie> Read(ObservableCollection<TypeProduit> typesProduit)
         {
             ObservableCollection<Categorie> lesCategories = new ObservableCollection<Categorie>();
             string sql = "SELECT num_categorie, num_type, libelle_categorie FROM categorie";
             DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
-                TypeProduit? type = ApplicationData.Find(ApplicationData.Instance.TypesProduit, (i) => i.Id == int.Parse(res["num_type"].ToString()!));
+                TypeProduit? type = ApplicationData.Find(typesProduit, (i) => i.Id == int.Parse(res["num_type"].ToString()));
                 if (type == null)
                     throw new Exception("Le type produit n'existe pas.");
 

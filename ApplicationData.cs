@@ -12,6 +12,10 @@ namespace MaquetteBotanic
         private ObservableCollection<TypeProduit> typesProduit;
         private ObservableCollection<Categorie> categories;
         private ObservableCollection<ProduitAchat> produits;
+        private ObservableCollection<Commande> commandes;
+        private ObservableCollection<Fournisseur> fournisseurs;
+        private ObservableCollection<Utilisateur> utilisateurs;
+
 
         public static ApplicationData Instance {
             get {
@@ -23,12 +27,17 @@ namespace MaquetteBotanic
         public ObservableCollection<TypeProduit> TypesProduit { get => this.typesProduit; set => this.typesProduit = value; }
         public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
         public ObservableCollection<ProduitAchat> Produits { get => this.produits; set => this.produits = value; }
+        public ObservableCollection<Commande> Commandes { get => this.commandes; set => this.commandes = value; }
+        public ObservableCollection<Fournisseur> Fournisseurs { get => this.fournisseurs; set => this.fournisseurs = value; }
+        public ObservableCollection<Utilisateur> Utilisateurs { get => this.utilisateurs; set => this.utilisateurs = value; }
 
         private ApplicationData()
         {
             TypesProduit = TypeProduit.Read();
-            Categories = Categorie.Read();
-            Produits = ProduitAchat.FromListProduit(Produit.Read());
+            Categories = Categorie.Read(TypesProduit);
+            Produits = ProduitAchat.FromListProduit(Produit.Read(Categories));
+            Fournisseurs = Fournisseur.Read();
+            Utilisateurs= Utilisateur.Read();
         }
 
         public delegate bool CallBack<T>(T item);
@@ -41,6 +50,20 @@ namespace MaquetteBotanic
                 if (callback.Invoke(item))
                 {
                     result = item;
+                }
+            }
+            return result;
+
+        }
+
+        public static ObservableCollection<T> Filter<T>(ObservableCollection<T> from, CallBack<T> callback)
+        {
+            ObservableCollection<T> result = new ObservableCollection<T>();
+            foreach (T item in from)
+            {
+                if (callback.Invoke(item))
+                {
+                    result.Add(item);
                 }
             }
             return result;
