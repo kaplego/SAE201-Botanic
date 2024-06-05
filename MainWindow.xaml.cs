@@ -43,11 +43,6 @@ namespace MaquetteBotanic
             btnPlantes.Foreground = Brushes.White;
         }
 
-        private void menuVisualiser_Click(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-            Visualiser visu = new Visualiser(this);
-            visu.Show();
-        }
+
     }
 }
