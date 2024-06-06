@@ -14,7 +14,10 @@ namespace MaquetteBotanic
         private ObservableCollection<ProduitAchat> produits;
         private ObservableCollection<Commande> commandes;
         private ObservableCollection<Fournisseur> fournisseurs;
-
+        private ObservableCollection<Utilisateur> utilisateurs;
+        private ObservableCollection<ModeLivraison> modeLivraisons;
+        private ObservableCollection<Magasin> magasins;
+        private ObservableCollection<Fournit> produitsFournits;
 
         public static ApplicationData Instance {
             get {
@@ -28,6 +31,10 @@ namespace MaquetteBotanic
         public ObservableCollection<ProduitAchat> Produits { get => this.produits; set => this.produits = value; }
         public ObservableCollection<Commande> Commandes { get => this.commandes; set => this.commandes = value; }
         public ObservableCollection<Fournisseur> Fournisseurs { get => this.fournisseurs; set => this.fournisseurs = value; }
+        public ObservableCollection<Utilisateur> Utilisateurs { get => this.utilisateurs; set => this.utilisateurs = value; }
+        public ObservableCollection<ModeLivraison> ModeLivraisons { get => this.modeLivraisons; set => this.modeLivraisons = value; }
+        public ObservableCollection<Magasin> Magasins { get => this.magasins; set => this.magasins = value; }
+        public ObservableCollection<Fournit> ProduitsFournits { get => this.produitsFournits; set => this.produitsFournits = value; }
 
         private ApplicationData()
         {
@@ -35,6 +42,14 @@ namespace MaquetteBotanic
             Categories = Categorie.Read(TypesProduit);
             Produits = ProduitAchat.FromListProduit(Produit.Read(Categories));
             Fournisseurs = Fournisseur.Read();
+            Utilisateurs = Utilisateur.Read();
+            ModeLivraisons = ModeLivraison.Read();
+            Magasins = Magasin.Read();
+            ProduitsFournits = Fournit.Read(
+                Magasins,
+                Fournisseurs,
+                Produits
+            );
         }
 
         public delegate bool CallBack<T>(T item);
