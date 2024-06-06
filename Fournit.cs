@@ -42,15 +42,15 @@ namespace MaquetteBotanic
             {
                 Fournisseur? fourn = ApplicationData.Find(fournisseurs, (i) => i.Id == int.Parse(res["num_fournisseur"].ToString()!));
                 if (fourn == null)
-                    throw new Exception("Le fournisseur n'existe pas.");
+                    continue;
 
                 Magasin? mag = ApplicationData.Find(magasins, (i) => i.Id == int.Parse(res["num_magasin"].ToString()!));
                 if (mag == null)
-                    throw new Exception("Le magasin n'existe pas.");
+                    continue;
 
                 Produit? prod = ApplicationData.Find(produits, (i) => i.Id == int.Parse(res["num_produit"].ToString()!));
                 if (prod == null)
-                    throw new Exception("Le produit n'existe pas.");
+                    continue;
 
                 Fournit nouveau = new Fournit(
                     fourn,

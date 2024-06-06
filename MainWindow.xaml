@@ -12,7 +12,6 @@
     MinHeight="410"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
     <Window.Resources>
         <Style x:Key="titleTemplate" TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -112,379 +111,364 @@
 
 
     </Window.Resources>
-    <TabControl>
-        <TabItem Header="Commander">
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="112*" />
-                    <ColumnDefinition Width="435*" />
-                    <ColumnDefinition Width="547*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Height="45"
+            Background="#FF00634C">
+            <Image
+                MaxHeight="45"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Source="/img/logo.png"
+                Stretch="Uniform" />
+        </StackPanel>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Commander">
 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="112*" />
+                        <ColumnDefinition Width="435*" />
+                        <ColumnDefinition Width="547*" />
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel
-                    Grid.ColumnSpan="3"
-                    Height="45"
-                    Background="#FF00634C">
-                    <Image
-                        MaxHeight="45"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Source="/img/logo.png"
-                        Stretch="Uniform" />
-                </StackPanel>
-
-                <ScrollViewer
-                    Grid.Row="1"
-                    Grid.ColumnSpan="2"
-                    VerticalScrollBarVisibility="Auto">
-                    <StackPanel Grid.Row="1" Margin="20,20,20,20">
-                        <TextBlock Style="{StaticResource TBxTitle}">
-                            Commander un produit de la centrale
-                        </TextBlock>
-
-                        <!--  Catégories  -->
-                        <StackPanel x:Name="panelCategories" Margin="0,10,0,0">
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                                <StackPanel x:Name="btnsTypes" Orientation="Horizontal" />
-                            </ScrollViewer>
-                            <Rectangle
-                                Height="3"
-                                Fill="#FFD9D9D9"
-                                StrokeThickness="0" />
-                        </StackPanel>
-
-                        <!--  Sous-catégories  -->
-                        <StackPanel
-                            x:Name="panelSousCategories"
-                            Margin="0,10,0,0"
-                            Visibility="Collapsed">
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                                <StackPanel x:Name="btnsCategories" Orientation="Horizontal" />
-                            </ScrollViewer>
-                            <Rectangle
-                                Height="3"
-                                Fill="#FFD9D9D9"
-                                StrokeThickness="0" />
-                        </StackPanel>
-
-                        <!--  Filtres  -->
-                        <Grid
-                            x:Name="gridFiltres"
-                            Margin="0,10,0,0"
-                            Visibility="Collapsed">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <ComboBox
-                                x:Name="cbCouleur"
-                                Margin="0,0,5,0"
-                                SelectedIndex="0">
-                                <ComboBoxItem Content="Aucun filtre de couleur" />
-                            </ComboBox>
-                            <ComboBox
-                                x:Name="cbTaille"
-                                Grid.Column="1"
-                                Margin="5,0,0,0"
-                                SelectedIndex="0">
-                                <ComboBoxItem Content="Aucun filtre de taille" />
-                            </ComboBox>
-                        </Grid>
-
-                        <!--  Produits  -->
-                        <ScrollViewer
-                            Margin="0,10,0,0"
-                            HorizontalScrollBarVisibility="Auto"
-                            VerticalScrollBarVisibility="Auto">
-                            <DataGrid
-                                x:Name="dgProduits"
-                                AutoGenerateColumns="False"
-                                IsReadOnly="True"
-                                ItemsSource="{Binding TemplateProduits}"
-                                Visibility="Collapsed">
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn MinWidth="60" Header="Quantité">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBox
-                                                    x:Name="tbxQuantite"
-                                                    Style="{StaticResource TBxQteProduit}"
-                                                    Text="{Binding Path=Quantite, Mode=TwoWay}" />
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn
-                                        MinWidth="100"
-                                        Binding="{Binding Nom}"
-                                        Header="Nom" />
-                                    <DataGridTextColumn
-                                        MinWidth="60"
-                                        Binding="{Binding Prix}"
-                                        Header="Prix" />
-                                    <DataGridTextColumn
-                                        MinWidth="50"
-                                        Binding="{Binding Couleur}"
-                                        Header="Couleur" />
-                                    <DataGridTextColumn
-                                        MinWidth="50"
-                                        Binding="{Binding Taille}"
-                                        Header="Taille" />
-                                    <DataGridTextColumn
-                                        MinWidth="125"
-                                        Binding="{Binding Description}"
-                                        Header="Description" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </ScrollViewer>
-
-                        <TextBlock
-                            x:Name="tbkTotal"
-                            Margin="0,10,0,10"
-                            FontSize="15"
-                            FontWeight="Bold"
-                            Foreground="#FF00634C"
-                            Visibility="Collapsed">
-                            Total : 0 produits pour 0.00 €
-                        </TextBlock>
-                        <Button
-                            x:Name="btnAcheter"
-                            Content="Commander 0 produits"
-                            IsEnabled="False"
-                            Style="{StaticResource ButtonsOK}"
-                            Visibility="Collapsed" />
-                    </StackPanel>
-                </ScrollViewer>
-                <ScrollViewer
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    VerticalScrollBarVisibility="Auto">
-                    <StackPanel MinHeight="365" Margin="20,20,20,20">
-                        <Separator
-                            Width="1"
-                            HorizontalAlignment="Left"
-                            Background="#FF00634C"
-                            Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        <TextBlock Style="{StaticResource TBxTitle}">
-                            Commander un produit local
-                        </TextBlock>
-                        <TextBlock Style="{StaticResource TBxSubTitle}">
-                            Produits déjà achetés
-                        </TextBlock>
-
-                        <Label
-                            Content="Nom du _produit"
-                            Style="{StaticResource TBxText}"
-                            Target="{Binding ElementName=nomProduit}" />
-                        <TextBox x:Name="nomProduit" Style="{StaticResource TBxDefault}" />
-                        <Label
-                            Content="Nom du _fournisseur"
-                            Style="{StaticResource TBxText}"
-                            Target="{Binding ElementName=nomFournisseur}" />
-                        <TextBox x:Name="nomFournisseur" Style="{StaticResource TBxDefault}" />
-
-                        <ScrollViewer
-                            Margin="0,10,0,0"
-                            HorizontalScrollBarVisibility="Auto"
-                            VerticalScrollBarVisibility="Auto">
-                            <DataGrid
-                                x:Name="dgProduitsLocaux"
-                                AutoGenerateColumns="False"
-                                ItemsSource="{Binding TemplateProduits}">
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn MinWidth="60" Header="Quantité">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBox
-                                                    x:Name="tbxQuantiteLocal"
-                                                    Style="{StaticResource TBxQteProduit}"
-                                                    Text="{Binding Path=Quantite, Mode=TwoWay}" />
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn
-                                        MinWidth="100"
-                                        Binding="{Binding Nom}"
-                                        Header="Nom"
-                                        IsReadOnly="True" />
-                                    <DataGridTextColumn
-                                        MinWidth="60"
-                                        Binding="{Binding Prix}"
-                                        Header="Prix"
-                                        IsReadOnly="True" />
-                                    <DataGridTextColumn
-                                        MinWidth="50"
-                                        Binding="{Binding Couleur}"
-                                        Header="Couleur"
-                                        IsReadOnly="True" />
-                                    <DataGridTextColumn
-                                        MinWidth="50"
-                                        Binding="{Binding Taille}"
-                                        Header="Taille"
-                                        IsReadOnly="True" />
-                                    <DataGridTextColumn
-                                        MinWidth="125"
-                                        Binding="{Binding Description}"
-                                        Header="Description"
-                                        IsReadOnly="True" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </ScrollViewer>
-                        <TextBlock
-                            x:Name="tbkTotalLocal"
-                            Margin="0,10,0,10"
-                            FontSize="15"
-                            FontWeight="Bold"
-                            Foreground="#FF00634C">
-                            Total : 0 produits pour 0,00 €
-                        </TextBlock>
-                        <Button
-                            x:Name="btnAcheterLocal"
-                            Content="Commander 0 produits"
-                            IsEnabled="False"
-                            Style="{StaticResource ButtonsOK}" />
-
-                        <TextBlock Style="{StaticResource TBxSubTitle}">
-                            Créer un produit
-                        </TextBlock>
-
-                        <Label
-                            Content="Nom du _produit"
-                            Style="{StaticResource TBxText}"
-                            Target="{Binding ElementName=nomNouveauProduit}" />
-                        <TextBox x:Name="nomNouveauProduit" Style="{StaticResource TBxDefault}" />
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Margin="0,0,5,0">
-                                <Label
-                                    Content="_Code du produit"
-                                    Style="{StaticResource TBxText}"
-                                    Target="{Binding ElementName=nomNouveauCode}" />
-                                <TextBox x:Name="nomNouveauCode" Style="{StaticResource TBxDefault}" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="5,0,0,0">
-                                <Label
-                                    Padding="0,0,0,5"
-                                    Content="Pri_x"
-                                    Target="{Binding ElementName=nomNouveauPrix}" />
-                                <TextBox x:Name="nomNouveauPrix" Style="{StaticResource TBxDefault}" />
-                            </StackPanel>
-                        </Grid>
-                        <Label
-                            Content="Nom du _fournisseur"
-                            Style="{StaticResource TBxText}"
-                            Target="{Binding ElementName=nomNouveauFournisseur}" />
-                        <TextBox x:Name="nomNouveauFournisseur" Style="{StaticResource TBxDefault}" />
-
-                        <Button
-                            x:Name="btnCreerProduit"
-                            Content="Créer le produit"
-                            Style="{StaticResource ButtonsOK}" />
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-        </TabItem>
-        <TabItem Header="Visualiser">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-
-                </Grid.RowDefinitions>
-                <StackPanel
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Height="45"
-                    Background="#FF00634C">
-                    <Image
-                        MaxHeight="45"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Source="/img/logo.png"
-                        Stretch="Uniform" />
-                </StackPanel>
-                <StackPanel Grid.Row="1" Margin="20,20,20,20">
-                    <TextBlock
+                    <ScrollViewer
                         Grid.Row="1"
-                        Margin="0,0,0,30"
-                        Style="{StaticResource TBxTitle}">
-                        Liste des commandes
-                    </TextBlock>
+                        Grid.ColumnSpan="2"
+                        VerticalScrollBarVisibility="Auto">
+                        <StackPanel Grid.Row="1" Margin="20,20,20,20">
+                            <TextBlock Style="{StaticResource TBxTitle}">
+                                Commander un produit de la centrale
+                            </TextBlock>
 
-                    <DataGrid
-                        Grid.Row="2"
-                        Grid.RowSpan="20"
-                        Grid.Column="0"
-                        Height="100"
-                        VerticalAlignment="Top"
-                        d:ItemsSource="{d:SampleData ItemCount=5}" />
-                </StackPanel>
-                <StackPanel
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="20,20,20,20">
-                    <TextBlock Margin="0,0,0,30" Style="{StaticResource TBxTitle}">
-                        Visualiser une commande
-                    </TextBlock>
+                            <!--  Catégories  -->
+                            <StackPanel x:Name="panelCategories" Margin="0,10,0,0">
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                    <StackPanel x:Name="btnsTypes" Orientation="Horizontal" />
+                                </ScrollViewer>
+                                <Rectangle
+                                    Height="3"
+                                    Fill="#FFD9D9D9"
+                                    StrokeThickness="0" />
+                            </StackPanel>
 
-                    <StackPanel>
-                        <Label Style="{StaticResource TBxText}">
-                            Date commande
-                        </Label>
-                        <TextBox Style="{StaticResource TBxDefault}">
-                            Date de la commande (à modifier programatically)
-                        </TextBox>
-                        <Label Style="{StaticResource TBxText}">
-                            Date livraison
-                        </Label>
-                        <TextBox Style="{StaticResource TBxDefault}">
-                            Date de la livraison (à modifier programatically)
-                        </TextBox>
-                        <Label Style="{StaticResource TBxText}">
-                            Mode livraison
-                        </Label>
-                        <TextBox Style="{StaticResource TBxDefault}">
-                            Mode de livraison (à modifier programatically)
-                        </TextBox>
-                        <Label Style="{StaticResource TBxText}">
-                            Liste des produits
-                        </Label>
+                            <!--  Sous-catégories  -->
+                            <StackPanel
+                                x:Name="panelSousCategories"
+                                Margin="0,10,0,0"
+                                Visibility="Collapsed">
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                    <StackPanel x:Name="btnsCategories" Orientation="Horizontal" />
+                                </ScrollViewer>
+                                <Rectangle
+                                    Height="3"
+                                    Fill="#FFD9D9D9"
+                                    StrokeThickness="0" />
+                            </StackPanel>
+
+                            <!--  Filtres  -->
+                            <Grid
+                                x:Name="gridFiltres"
+                                Margin="0,10,0,0"
+                                Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                    x:Name="cbCouleur"
+                                    Margin="0,0,5,0"
+                                    SelectedIndex="0">
+                                    <ComboBoxItem Content="Aucun filtre de couleur" />
+                                </ComboBox>
+                                <ComboBox
+                                    x:Name="cbTaille"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    SelectedIndex="0">
+                                    <ComboBoxItem Content="Aucun filtre de taille" />
+                                </ComboBox>
+                            </Grid>
+
+                            <!--  Produits  -->
+                            <ScrollViewer
+                                Margin="0,10,0,0"
+                                HorizontalScrollBarVisibility="Auto"
+                                VerticalScrollBarVisibility="Auto">
+                                <DataGrid
+                                    x:Name="dgProduits"
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    Visibility="Collapsed">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn MinWidth="60" Header="Quantité">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox
+                                                        x:Name="tbxQuantite"
+                                                        Style="{StaticResource TBxQteProduit}"
+                                                        Text="{Binding Path=Quantite, Mode=TwoWay}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn
+                                            MinWidth="100"
+                                            Binding="{Binding LeProduit.Nom}"
+                                            Header="Nom" />
+                                        <DataGridTextColumn
+                                            MinWidth="60"
+                                            Binding="{Binding LeProduit.Prix}"
+                                            Header="Prix" />
+                                        <DataGridTextColumn
+                                            MinWidth="50"
+                                            Binding="{Binding LeProduit.Couleur}"
+                                            Header="Couleur" />
+                                        <DataGridTextColumn
+                                            MinWidth="50"
+                                            Binding="{Binding LeProduit.Taille}"
+                                            Header="Taille" />
+                                        <DataGridTextColumn
+                                            MinWidth="125"
+                                            Binding="{Binding LeProduit.Description}"
+                                            Header="Description" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </ScrollViewer>
+
+                            <TextBlock
+                                x:Name="tbkTotal"
+                                Margin="0,10,0,10"
+                                FontSize="15"
+                                FontWeight="Bold"
+                                Foreground="#FF00634C"
+                                Visibility="Collapsed">
+                                Total : 0 produits pour 0.00 €
+                            </TextBlock>
+                            <Button
+                                x:Name="btnAcheter"
+                                Content="Commander 0 produits"
+                                IsEnabled="False"
+                                Style="{StaticResource ButtonsOK}"
+                                Visibility="Collapsed" />
+                        </StackPanel>
+                    </ScrollViewer>
+                    <ScrollViewer
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        VerticalScrollBarVisibility="Auto">
+                        <StackPanel MinHeight="365" Margin="20,20,20,20">
+                            <Separator
+                                Width="1"
+                                HorizontalAlignment="Left"
+                                Background="#FF00634C"
+                                Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            <TextBlock Style="{StaticResource TBxTitle}">
+                                Commander un produit local
+                            </TextBlock>
+                            <TextBlock Style="{StaticResource TBxSubTitle}">
+                                Produits déjà achetés
+                            </TextBlock>
+
+                            <Label
+                                Content="Nom du _produit"
+                                Style="{StaticResource TBxText}"
+                                Target="{Binding ElementName=nomProduit}" />
+                            <TextBox x:Name="nomProduit" Style="{StaticResource TBxDefault}" />
+                            <Label
+                                Content="Nom du _fournisseur"
+                                Style="{StaticResource TBxText}"
+                                Target="{Binding ElementName=nomFournisseur}" />
+                            <TextBox x:Name="nomFournisseur" Style="{StaticResource TBxDefault}" />
+
+                            <ScrollViewer
+                                Margin="0,10,0,0"
+                                HorizontalScrollBarVisibility="Auto"
+                                VerticalScrollBarVisibility="Auto">
+                                <DataGrid
+                                    x:Name="dgProduitsLocaux"
+                                    AutoGenerateColumns="False"
+                                    ItemsSource="{Binding TemplateProduits}">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn MinWidth="60" Header="Quantité">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox
+                                                        x:Name="tbxQuantiteLocal"
+                                                        Style="{StaticResource TBxQteProduit}"
+                                                        Text="{Binding Path=Quantite, Mode=TwoWay}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn
+                                            MinWidth="100"
+                                            Binding="{Binding Nom}"
+                                            Header="Nom"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            MinWidth="60"
+                                            Binding="{Binding Prix}"
+                                            Header="Prix"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            MinWidth="50"
+                                            Binding="{Binding Couleur}"
+                                            Header="Couleur"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            MinWidth="50"
+                                            Binding="{Binding Taille}"
+                                            Header="Taille"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            MinWidth="125"
+                                            Binding="{Binding Description}"
+                                            Header="Description"
+                                            IsReadOnly="True" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </ScrollViewer>
+                            <TextBlock
+                                x:Name="tbkTotalLocal"
+                                Margin="0,10,0,10"
+                                FontSize="15"
+                                FontWeight="Bold"
+                                Foreground="#FF00634C">
+                                Total : 0 produits pour 0,00 €
+                            </TextBlock>
+                            <Button
+                                x:Name="btnAcheterLocal"
+                                Content="Commander 0 produits"
+                                IsEnabled="False"
+                                Style="{StaticResource ButtonsOK}" />
+
+                            <TextBlock Style="{StaticResource TBxSubTitle}">
+                                Créer un produit
+                            </TextBlock>
+
+                            <Label
+                                Content="Nom du _produit"
+                                Style="{StaticResource TBxText}"
+                                Target="{Binding ElementName=nomNouveauProduit}" />
+                            <TextBox x:Name="nomNouveauProduit" Style="{StaticResource TBxDefault}" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                                    <Label
+                                        Content="_Code du produit"
+                                        Style="{StaticResource TBxText}"
+                                        Target="{Binding ElementName=nomNouveauCode}" />
+                                    <TextBox x:Name="nomNouveauCode" Style="{StaticResource TBxDefault}" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                                    <Label
+                                        Padding="0,0,0,5"
+                                        Content="Pri_x"
+                                        Target="{Binding ElementName=nomNouveauPrix}" />
+                                    <TextBox x:Name="nomNouveauPrix" Style="{StaticResource TBxDefault}" />
+                                </StackPanel>
+                            </Grid>
+                            <Label
+                                Content="Nom du _fournisseur"
+                                Style="{StaticResource TBxText}"
+                                Target="{Binding ElementName=nomNouveauFournisseur}" />
+                            <TextBox x:Name="nomNouveauFournisseur" Style="{StaticResource TBxDefault}" />
+
+                            <Button
+                                x:Name="btnCreerProduit"
+                                Content="Créer le produit"
+                                Style="{StaticResource ButtonsOK}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Visualiser">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="1" Margin="20,20,20,20">
+                        <TextBlock
+                            Grid.Row="1"
+                            Margin="0,0,0,30"
+                            Style="{StaticResource TBxTitle}">
+                            Liste des commandes
+                        </TextBlock>
+
                         <DataGrid
+                            Grid.Row="2"
+                            Grid.RowSpan="20"
+                            Grid.Column="0"
                             Height="100"
                             VerticalAlignment="Top"
                             d:ItemsSource="{d:SampleData ItemCount=5}" />
                     </StackPanel>
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="20,20,20,20">
+                        <TextBlock Margin="0,0,0,30" Style="{StaticResource TBxTitle}">
+                            Visualiser une commande
+                        </TextBlock>
 
-                </StackPanel>
+                        <StackPanel>
+                            <Label Style="{StaticResource TBxText}">
+                                Date commande
+                            </Label>
+                            <TextBox Style="{StaticResource TBxDefault}">
+                                Date de la commande (à modifier programatically)
+                            </TextBox>
+                            <Label Style="{StaticResource TBxText}">
+                                Date livraison
+                            </Label>
+                            <TextBox Style="{StaticResource TBxDefault}">
+                                Date de la livraison (à modifier programatically)
+                            </TextBox>
+                            <Label Style="{StaticResource TBxText}">
+                                Mode livraison
+                            </Label>
+                            <TextBox Style="{StaticResource TBxDefault}">
+                                Mode de livraison (à modifier programatically)
+                            </TextBox>
+                            <Label Style="{StaticResource TBxText}">
+                                Liste des produits
+                            </Label>
+                            <DataGrid
+                                Height="100"
+                                VerticalAlignment="Top"
+                                d:ItemsSource="{d:SampleData ItemCount=5}" />
+                        </StackPanel>
 
+                    </StackPanel>
 
-                <TextBox
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Width="120"
-                    Height="0"
-                    Margin="58,38,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Text="TextBox"
-                    TextWrapping="Wrap" />
-            </Grid>
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="120"
+                        Height="0"
+                        Margin="58,38,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Text="TextBox"
+                        TextWrapping="Wrap" />
+                </Grid>
 
-        </TabItem>
-    </TabControl>
-
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>

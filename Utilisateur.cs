@@ -74,6 +74,14 @@ namespace MaquetteBotanic
             this.Password = password;
         }
 
+        public Utilisateur(int id, string login, string password, int numMagasin)
+        {
+            this.Id = id;
+            this.Login = login;
+            this.Password = password;
+            this.NumMagasin = numMagasin;
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is Utilisateur utilisateur &&
@@ -95,19 +103,38 @@ namespace MaquetteBotanic
 
         public static ObservableCollection<Utilisateur> Read()
         {
-            ObservableCollection<Utilisateur> lesCommandes = new ObservableCollection<Utilisateur>();
-            string sql = "SELECT NUM_UTILISATEUR, LOGIN_USER, PASS_USER FROM Utilisateur";
+            ObservableCollection<Utilisateur> unUtilisateur = new ObservableCollection<Utilisateur>();
+            string sql = "SELECT * FROM utilisateur";
             DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
                 Utilisateur nouveau = new Utilisateur(
-                    int.Parse(res["num_commande"].ToString()!),
-                    res["date_commande"].ToString()!,
-                    res["date_livraison"].ToString()!
+                    int.Parse(res["num_utilisateur"].ToString()!),
+                    res["login_user"].ToString()!,
+                    res["pass_user"].ToString()!,
+                    int.Parse(res["num_magasin"].ToString()!)
                 );
-                lesCommandes.Add(nouveau);
+                unUtilisateur.Add(nouveau);
             }
-            return lesCommandes;
+            return unUtilisateur;
+        }
+
+        public static Utilisateur? Current()
+        {
+            string sql = "SELECT * FROM utilisateur WHERE login_user=user";
+            DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
+
+            if (dt.Rows.Count == 0)
+                return null;
+
+            DataRow res = dt.Rows[0];
+
+            return new Utilisateur(
+                int.Parse(res["num_utilisateur"].ToString()!),
+                res["login_user"].ToString()!,
+                res["pass_user"].ToString()!,
+                int.Parse(res["num_magasin"].ToString()!)
+            );
         }
 
         public int Create()

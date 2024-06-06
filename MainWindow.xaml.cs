@@ -15,9 +15,9 @@ namespace MaquetteBotanic
         public MainWindow()
         {
             Connexion connexion = new Connexion();
-            bool ok = connexion.ShowDialog() ?? false;
+            bool connecte = connexion.ShowDialog() ?? false;
 
-            if (!ok)
+            if (!connecte)
             {
                 this.Close();
                 return;
@@ -50,10 +50,10 @@ namespace MaquetteBotanic
                 {
                     if (btn == sender)
                     {
-                        int id = int.Parse(btn.Name.Substring(4));
+                        int idType = int.Parse(btn.Name.Substring(4));
 
                         btnsCategories.Children.Clear();
-                        foreach (Categorie cat in ApplicationData.Filter(ApplicationData.Instance.Categories, (i) => i.Type.Id == id))
+                        foreach (Categorie cat in ApplicationData.Filter(ApplicationData.Instance.Categories, (i) => i.Type.Id == idType))
                         {
                             Button btnCat = new Button();
                             btnCat.Margin = new Thickness(0, 0, 5, 0);
@@ -90,9 +90,15 @@ namespace MaquetteBotanic
                 {
                     if (btn == sender)
                     {
-                        int id = int.Parse(btn.Name.Substring(6));
+                        int idCategorie = int.Parse(btn.Name.Substring(6));
 
-                        dgProduits.ItemsSource = ApplicationData.Filter(ApplicationData.Instance.Produits, (p) => p.LeProduit.LaCategorie.Id == id);
+                        dgProduits.ItemsSource = ApplicationData.Filter(ApplicationData.Instance.Produits, (p) =>
+                        {
+                            return
+                                p.LeProduit.LaCategorie.Id == idCategorie &&
+                                ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) =>
+                                    pf.LeProduit.Id == p.LeProduit.Id)?.LeFournisseur.Local == false;
+                        });
 
                         gridFiltres.Visibility = Visibility.Visible;
                         dgProduits.Visibility = Visibility.Visible;
