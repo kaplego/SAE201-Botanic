@@ -33,9 +33,11 @@ namespace MaquetteBotanic
 
         private void btnValider_Click(object sender, RoutedEventArgs e)
         {
+            // Récupérer les entrées utilisateurs
             string usr = tbxUsername.Text;
             string pwd = tbxPassword.Password;
-
+            
+            // Vérifier que les valeurs sont correctes
             if (string.IsNullOrEmpty(usr) || usr.Length > MAX_USERNAME_LENGTH || string.IsNullOrEmpty(pwd))
             {
                 MessageBox.Show(
@@ -47,9 +49,11 @@ namespace MaquetteBotanic
                 return;
             }
             
+            // Mettre à jour les identifiants DataAccess
             DataAccess.username = usr;
             DataAccess.password = pwd;
 
+            // Vérifier la connexion à la base de données
             try
             {
                 DataAccess.Instance?.Test();
@@ -65,6 +69,7 @@ namespace MaquetteBotanic
                 return;
             }
             
+            // Ouvrir la mainWindow si les identifiants sont corrects.
             this.DialogResult = true;
         }
     }

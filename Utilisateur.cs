@@ -12,6 +12,7 @@ namespace MaquetteBotanic
     {
         private int id;
         private string login;
+        private string nom;
         private string password;
         private int numMagasin;
 
@@ -67,17 +68,21 @@ namespace MaquetteBotanic
             }
         }
 
-        public Utilisateur(int id, string login, string password)
+        public string Nom { get => this.nom; set => this.nom = value; }
+
+        public Utilisateur(int id, string login, string nom, string password)
         {
             this.Id = id;
             this.Login = login;
+            this.Nom = nom;
             this.Password = password;
         }
 
-        public Utilisateur(int id, string login, string password, int numMagasin)
+        public Utilisateur(int id, string login, string nom, string password, int numMagasin)
         {
             this.Id = id;
             this.Login = login;
+            this.Nom = nom;
             this.Password = password;
             this.NumMagasin = numMagasin;
         }
@@ -87,18 +92,19 @@ namespace MaquetteBotanic
             return obj is Utilisateur utilisateur &&
                    this.Id == utilisateur.Id &&
                    this.Login == utilisateur.Login &&
+                   this.Nom == utilisateur.Nom &&
                    this.Password == utilisateur.Password &&
                    this.NumMagasin == utilisateur.NumMagasin;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Id, this.Login, this.Password, this.NumMagasin);
+            return HashCode.Combine(this.Id, this.Login, this.Nom, this.Password, this.NumMagasin);
         }
 
         public override string? ToString()
         {
-            return $"Login : {Login} \nPassword : ****";
+            return $"Login : {Login}\nPassword : ****";
         }
 
         public static ObservableCollection<Utilisateur> Read()
@@ -111,6 +117,7 @@ namespace MaquetteBotanic
                 Utilisateur nouveau = new Utilisateur(
                     int.Parse(res["num_utilisateur"].ToString()!),
                     res["login_user"].ToString()!,
+                    res["nom_user"].ToString()!,
                     res["pass_user"].ToString()!,
                     int.Parse(res["num_magasin"].ToString()!)
                 );
@@ -132,6 +139,7 @@ namespace MaquetteBotanic
             return new Utilisateur(
                 int.Parse(res["num_utilisateur"].ToString()!),
                 res["login_user"].ToString()!,
+                res["nom_user"].ToString()!,
                 res["pass_user"].ToString()!,
                 int.Parse(res["num_magasin"].ToString()!)
             );

@@ -24,11 +24,11 @@ namespace MaquetteBotanic
             }
 
             InitializeComponent();
-            LoadTypesCategories();
-        }
 
-        private void LoadTypesCategories()
-        {
+            nomMagasin.Text = "Magasin : " + ApplicationData.Instance.MagasinActuel.Nom;
+            nomUtilisateur.Text = ApplicationData.Instance.UtilisateurActuel.Nom;
+
+            // Charger les types de produits
             foreach (TypeProduit type in ApplicationData.Instance.TypesProduit)
             {
                 Button btn = new Button();
@@ -44,15 +44,20 @@ namespace MaquetteBotanic
 
         private void ButtonType_Click(object sender, RoutedEventArgs e)
         {
+            // Parcourir tous les boutons de type
             foreach (object obj in btnsTypes.Children)
             {
                 if (obj is Button btn)
                 {
                     if (btn == sender)
                     {
+                        // Si le bouton est le bouton cliqué
                         int idType = int.Parse(btn.Name.Substring(4));
 
+                        // Effacer les anciennes catégories
                         btnsCategories.Children.Clear();
+
+                        // Ajouter les catégories pour le type sélectionné
                         foreach (Categorie cat in ApplicationData.Filter(ApplicationData.Instance.Categories, (i) => i.Type.Id == idType))
                         {
                             Button btnCat = new Button();
@@ -70,11 +75,13 @@ namespace MaquetteBotanic
                         tbkTotal.Visibility = Visibility.Collapsed;
                         btnAcheter.Visibility = Visibility.Collapsed;
 
+                        // Mettre en surbrillance le bouton
                         btn.Background = couleurBotanic;
                         btn.Foreground = Brushes.White;
                     }
                     else
                     {
+                        // Supprimer la surbrillance des autres boutons
                         btn.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD9D9D9")!;
                         btn.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF393939")!;
                     }
@@ -84,14 +91,17 @@ namespace MaquetteBotanic
 
         private void ButtonCategorie_Click(object sender, RoutedEventArgs e)
         {
+            // Parcourir tous les boutons de catégorie
             foreach (object obj in btnsCategories.Children)
             {
                 if (obj is Button btn)
                 {
                     if (btn == sender)
                     {
+                        // Si le bouton est le bouton cliqué
                         int idCategorie = int.Parse(btn.Name.Substring(6));
 
+                        // Mettre à jour les produits filtrés par la catégorie
                         dgProduits.ItemsSource = ApplicationData.Filter(ApplicationData.Instance.Produits, (p) =>
                         {
                             return
@@ -105,11 +115,13 @@ namespace MaquetteBotanic
                         tbkTotal.Visibility = Visibility.Visible;
                         btnAcheter.Visibility = Visibility.Visible;
 
+                        // Mettre en surbrillance le bouton
                         btn.Background = couleurBotanic;
                         btn.Foreground = Brushes.White;
                     }
                     else
                     {
+                        // Supprimer la surbrillance des autres boutons
                         btn.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD9D9D9")!;
                         btn.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#FF393939")!;
                     }
