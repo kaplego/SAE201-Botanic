@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,6 +13,12 @@ namespace MaquetteBotanic
     public partial class MainWindow : Window
     {
         public static readonly Brush couleurBotanic = new SolidColorBrush(Color.FromRgb(0, 99, 76));
+
+        public static ObservableCollection<ProduitAchat> produitsCentrale = new ObservableCollection<ProduitAchat>();
+        public static string? filtreCouleur = null;
+        public static string? filtreTaille = null;
+
+        public static ObservableCollection<ProduitAchat>? dgItems = null;
 
         public MainWindow()
         {
@@ -72,8 +80,6 @@ namespace MaquetteBotanic
                         panelSousCategories.Visibility = Visibility.Visible;
                         gridFiltres.Visibility = Visibility.Collapsed;
                         dgProduits.Visibility = Visibility.Collapsed;
-                        tbkTotal.Visibility = Visibility.Collapsed;
-                        btnAcheter.Visibility = Visibility.Collapsed;
 
                         // Mettre en surbrillance le bouton
                         btn.Background = couleurBotanic;
@@ -102,17 +108,42 @@ namespace MaquetteBotanic
                         int idCategorie = int.Parse(btn.Name.Substring(6));
 
                         // Mettre à jour les produits filtrés par la catégorie
-                        dgProduits.ItemsSource = ApplicationData.Filter(ApplicationData.Instance.Produits, (p) =>
+                        dgItems = ProduitAchat.FromListProduit(ApplicationData.Filter(ApplicationData.Instance.Produits, (p) =>
                         {
                             return
-                                p.LeProduit.LaCategorie.Id == idCategorie &&
+                                p.LaCategorie.Id == idCategorie &&
                                 ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) =>
-                                    pf.LeProduit.Id == p.LeProduit.Id)?.LeFournisseur.Local == false;
-                        });
+                                    pf.LeProduit.Id == p.Id)?.LeFournisseur.Local == false;
+                        }));
+                        dgProduits.ItemsSource = dgItems;
+
+                        List<string> couleurs = new List<string>();
+                        List<string> tailles = new List<string>();
+                        foreach (ProduitAchat produit in dgProduits.ItemsSource)
+                        {
+                            // Initialiser les filtres
+                            if (!couleurs.Contains(produit.LeProduit.Couleur))
+                            {
+                                ComboBoxItem item = new ComboBoxItem();
+                                item.Content = produit.LeProduit.Couleur;
+                                cbCouleur.Items.Add(item);
+                            }
+                            if (!tailles.Contains(produit.LeProduit.Taille))
+                            {
+                                ComboBoxItem item = new ComboBoxItem();
+                                item.Content = produit.LeProduit.Taille;
+                                cbTaille.Items.Add(item);
+                            }
+
+                            // Initialiser la quantité
+                            if (produitsCentrale.Contains(produit))
+                            {
+                                produit.Quantite = ApplicationData.Find(produitsCentrale , (p) => p.Equals(produit))!.Quantite;
+                            }
+                        }
 
                         gridFiltres.Visibility = Visibility.Visible;
                         dgProduits.Visibility = Visibility.Visible;
-                        tbkTotal.Visibility = Visibility.Visible;
                         btnAcheter.Visibility = Visibility.Visible;
 
                         // Mettre en surbrillance le bouton
@@ -129,6 +160,96 @@ namespace MaquetteBotanic
             }
         }
 
+        private void dgProduits_CurrentCellChanged(object sender, System.EventArgs e)
+        {
+            foreach (ProduitAchat produit in dgProduits.Items)
+            {
+                if (produit.Quantite > 0 && !produitsCentrale.Contains(produit))
+                {
+                    produitsCentrale.Add(produit);
+                }
+                else if (produit.Quantite <= 0 && produitsCentrale.Contains(produit))
+                    produitsCentrale.Remove(produit);
+            }
 
+            btnAcheter.IsEnabled = produitsCentrale.Count > 0;
+
+            //int nbProduits = produitsCentrale.Aggregate(0, (acc, p) => acc + p.Quantite);
+            //double total = produitsCentrale.Aggregate(0.0, (acc, p) =>
+            //    acc + (p.Quantite * ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) =>
+            //        pf.LeProduit.Id == p.LeProduit.Id)!.PrixAchat)
+            //);
+
+            //tbkTotal.Text = $"Total : {nbProduits} produit{(nbProduits != 1 ? "s" : "")} pour {total:n2} €";
+
+            //if (produitsCentrale.Count > 0)
+            //{
+            //    btnAcheter.Content = $"Commander {nbProduits} produit{(nbProduits != 1 ? "s" : "")}";
+            //    btnAcheter.IsEnabled = produitsCentrale.Count > 0;
+            //}
+        }
+
+        private void cbCouleur_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb)
+            {
+                if (cb.SelectedIndex == 0)
+                    filtreCouleur = null;
+                else
+                    filtreCouleur = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
+            }
+            Filtrer();
+        }
+
+        private void cbTaille_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox cb)
+            {
+                if (cb.SelectedIndex == 0)
+                    filtreTaille = null;
+                else
+                    filtreTaille = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
+            }
+            Filtrer();
+        }
+
+        private void Filtrer()
+        {
+            if (dgItems == null)
+                return;
+
+            if (filtreCouleur == null && filtreTaille == null)
+                dgProduits.ItemsSource = dgItems;
+
+            dgProduits.ItemsSource = ApplicationData.Filter(dgItems, (i) =>
+                (filtreCouleur == null || i.LeProduit.Couleur == filtreCouleur) &&
+                (filtreTaille == null || i.LeProduit.Taille == filtreTaille));
+        }
+
+        private void Recapitulatif(object sender, RoutedEventArgs e)
+        {
+            if (produitsCentrale == null || produitsCentrale.Count == 0)
+            {
+                MessageBox.Show(
+                    "Vous devez sélectionner des produits.",
+                    "Erreur",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                return;
+            }
+
+            RecapitulatifCommande recap = new RecapitulatifCommande(produitsCentrale, false);
+            if (recap.ShowDialog() == true)
+            {
+                MessageBox.Show(
+                    "La commande a été créée avec succès.",
+                    "Succès",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+                ApplicationData.Instance.Commandes = Commande.Read();
+            }
+        }
     }
 }

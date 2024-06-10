@@ -34,5 +34,11 @@ namespace MaquetteBotanic
         {
             return this.Quantite * this.LeProduit.Prix;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ProduitAchat achat &&
+                   EqualityComparer<Produit>.Default.Equals(this.LeProduit, achat.LeProduit);
+        }
     }
 }

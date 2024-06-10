@@ -24,6 +24,7 @@ namespace MaquetteBotanic
         public Connexion()
         {
             InitializeComponent();
+            tbxUsername.Focus();
         }
 
         private void btnQuitter_Click(object sender, RoutedEventArgs e)

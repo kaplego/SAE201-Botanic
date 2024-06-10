@@ -11,7 +11,7 @@ namespace MaquetteBotanic
 
         private ObservableCollection<TypeProduit> typesProduit;
         private ObservableCollection<Categorie> categories;
-        private ObservableCollection<ProduitAchat> produits;
+        private ObservableCollection<Produit> produits;
         private ObservableCollection<Commande> commandes;
         private ObservableCollection<Fournisseur> fournisseurs;
         private ObservableCollection<ModeLivraison> modeLivraisons;
@@ -29,7 +29,7 @@ namespace MaquetteBotanic
         public Magasin MagasinActuel { get => this.magasinActuel; set => this.magasinActuel = value; }
 
         public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
-        public ObservableCollection<ProduitAchat> Produits { get => this.produits; set => this.produits = value; }
+        public ObservableCollection<Produit> Produits { get => this.produits; set => this.produits = value; }
         public ObservableCollection<Commande> Commandes { get => this.commandes; set => this.commandes = value; }
         public ObservableCollection<Fournisseur> Fournisseurs { get => this.fournisseurs; set => this.fournisseurs = value; }
         public ObservableCollection<ModeLivraison> ModeLivraisons { get => this.modeLivraisons; set => this.modeLivraisons = value; }
@@ -46,9 +46,8 @@ namespace MaquetteBotanic
             ModeLivraisons = ModeLivraison.Read();
             TypesProduit = TypeProduit.Read();
             Categories = Categorie.Read(TypesProduit);
-            Produits = ProduitAchat.FromListProduit(Produit.Read(Categories, MagasinActuel));
+            Produits = Produit.Read(Categories);
             ProduitsFournits = Fournit.Read(
-                new ObservableCollection<Magasin>() { MagasinActuel },
                 Fournisseurs,
                 Produits
             );

@@ -44,15 +44,8 @@ namespace MaquetteBotanic
         }
 
         public static ObservableCollection<Produit> Read(ObservableCollection<Categorie> categories)
-            => Read(categories, "SELECT * FROM produit");
-
-        public static ObservableCollection<Produit> Read(ObservableCollection<Categorie> categories, Magasin magasin)
-            => Read(categories, "SELECT p.* FROM produit p " +
-                "JOIN stock s ON p.num_produit = s.num_produit " +
-                $"WHERE s.num_magasin = {magasin.Id}");
-
-        private static ObservableCollection<Produit> Read(ObservableCollection<Categorie> categories, string sql)
         {
+            string sql = "SELECT * FROM produit";
             ObservableCollection<Produit> lesProduits = new ObservableCollection<Produit>();
             DataTable dt = DataAccess.Instance!.GetData(sql);
             foreach (DataRow res in dt.Rows)
@@ -98,6 +91,12 @@ namespace MaquetteBotanic
                          $" couleur_produit='{Couleur}', taille_produit='{Taille}', description_produit='{Description}', prix_vente={Prix}" +
                          $" WHERE num_produit={Id}";
             return DataAccess.Instance.SetData(sql);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Produit produit &&
+                   this.Id == produit.Id;
         }
     }
 }

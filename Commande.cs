@@ -13,7 +13,7 @@ namespace MaquetteBotanic
     {
         private int id;
         private DateTime dateCommande;
-        private DateTime dateLivraison;
+        private DateTime? dateLivraison;
         private int numModeLivraison;
         private List<ProduitAchat> lesProduits;
         private int numMagasin;
@@ -44,7 +44,7 @@ namespace MaquetteBotanic
             }
         }
 
-        public DateTime DateLivraison
+        public DateTime? DateLivraison
         {
             get
             {
@@ -74,12 +74,12 @@ namespace MaquetteBotanic
         {
             get
             {
-                return this.NumModeLivraison;
+                return this.numModeLivraison;
             }
 
             set
             {
-                this.NumModeLivraison = value;
+                this.numModeLivraison = value;
             }
         }
 
@@ -96,14 +96,20 @@ namespace MaquetteBotanic
             }
         }
 
-        public Commande(int id, DateTime dateCommande, DateTime dateLivraison)
+        public Commande(DateTime dateCommande, DateTime? dateLivraison)
+        {
+            this.DateCommande = dateCommande;
+            this.DateLivraison = dateLivraison;
+        }
+
+        public Commande(int id, DateTime dateCommande, DateTime? dateLivraison)
         {
             this.Id = id;
             this.DateCommande = dateCommande;
             this.DateLivraison = dateLivraison;
         }
 
-        public Commande(int id, DateTime dateCommande, DateTime dateLivraison, List<ProduitAchat> lesProduits, int NumModeLivraison)
+        public Commande(int id, DateTime dateCommande, DateTime? dateLivraison, List<ProduitAchat> lesProduits, int NumModeLivraison)
         {
             this.Id = id;
             this.DateCommande = dateCommande;
@@ -135,14 +141,14 @@ namespace MaquetteBotanic
         public static ObservableCollection<Commande> Read()
         {
             ObservableCollection<Commande> lesCommandes = new ObservableCollection<Commande>();
-            string sql = "SELECT num_commande, date_commande, date_livraison FROM Commande";
+            string sql = "SELECT num_commande, date_commande, date_livraison FROM commande_achat";
             DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
                 Commande nouveau = new Commande(
                     int.Parse(res["num_commande"].ToString()!),
                     DateTime.Parse(res["date_commande"].ToString()!),
-                    DateTime.Parse(res["date_livraison"].ToString()!)
+                    res["date_livraison"].ToString() != null ? DateTime.Parse(res["date_livraison"].ToString()!) : null
                 );
                 lesCommandes.Add(nouveau);
             }
@@ -151,21 +157,40 @@ namespace MaquetteBotanic
 
         public int Create()
         {
-            string sql = $"INSERT INTO produit (num_magasin, date_commande, date_livraison)"
-                         + $" values ('{NumMagasin}','{DateCommande}','{DateLivraison}'";
-            return DataAccess.Instance.SetData(sql);
+            string sql = $"INSERT INTO commande_achat (num_magasin, date_commande, date_livraison, num_mode_livraison) " +
+                         $"VALUES ('{this.NumMagasin}','{this.DateCommande}',{(DateLivraison != null ? $"'{DateLivraison}'" : "NULL")},{this.NumModeLivraison}) RETURNING num_commande;";
+            DataTable dt = DataAccess.Instance.GetData(sql);
+            DataRow? dr = dt.Rows[0] ?? null;
+
+            if (dr == null)
+                return -1;
+
+            int commande_id = int.Parse(dr["num_commande"].ToString()!);
+
+            foreach (ProduitAchat produit in this.LesProduits)
+            {
+                Fournit? fournit = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == produit.LeProduit.Id);
+
+                if (fournit == null)
+                    continue;
+
+                sql = "INSERT INTO detail_commande (num_commande, num_produit, num_fournisseur, quantite_commandee) " +
+                    $"VALUES ({commande_id}, {produit.LeProduit.Id}, {fournit.LeFournisseur.Id}, {produit.Quantite});";
+                DataAccess.Instance.SetData(sql);
+            }
+            return 0;
         }
 
         public int Delete()
         {
-            string sql = $"DELETE FROM commande" +
+            string sql = $"DELETE FROM commande_achat" +
                          $" WHERE num_commande = {Id}";
             return DataAccess.Instance.SetData(sql);
         }
 
         public int Update()
         {
-            string sql = $"UPDATE commande" +
+            string sql = $"UPDATE commande_achat" +
                          $" SET date_commande={DateCommande}," +
                          $" date_livraison='{DateLivraison}'" +
                          $" WHERE num_commande={Id}";
