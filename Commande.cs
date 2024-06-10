@@ -148,7 +148,7 @@ namespace MaquetteBotanic
                 Commande nouveau = new Commande(
                     int.Parse(res["num_commande"].ToString()!),
                     DateTime.Parse(res["date_commande"].ToString()!),
-                    res["date_livraison"].ToString() != null ? DateTime.Parse(res["date_livraison"].ToString()!) : null
+                    string.IsNullOrEmpty(res["date_livraison"].ToString()) ? null : DateTime.Parse(res["date_livraison"].ToString()!)
                 );
                 lesCommandes.Add(nouveau);
             }

@@ -295,7 +295,7 @@
                             </TextBlock>-->
                             <Button
                                 x:Name="btnAcheter"
-                                Click="Recapitulatif"
+                                Click="btnAcheter_Click"
                                 Content="Récapitulatif"
                                 IsEnabled="False"
                                 Style="{StaticResource ButtonsOK}" />
@@ -320,12 +320,18 @@
                                 Content="Nom du _produit"
                                 Style="{StaticResource TBxText}"
                                 Target="{Binding ElementName=nomProduit}" />
-                            <TextBox x:Name="nomProduit" Style="{StaticResource TBxDefault}" />
+                            <TextBox
+                                x:Name="nomProduit"
+                                Style="{StaticResource TBxDefault}"
+                                TextChanged="nomProduit_TextChanged" />
                             <Label
                                 Content="Nom du _fournisseur"
                                 Style="{StaticResource TBxText}"
                                 Target="{Binding ElementName=nomFournisseur}" />
-                            <TextBox x:Name="nomFournisseur" Style="{StaticResource TBxDefault}" />
+                            <TextBox
+                                x:Name="nomFournisseur"
+                                Style="{StaticResource TBxDefault}"
+                                TextChanged="nomFournisseur_TextChanged" />
 
                             <ScrollViewer
                                 Margin="0,10,0,0"
@@ -334,58 +340,47 @@
                                 <DataGrid
                                     x:Name="dgProduitsLocaux"
                                     AutoGenerateColumns="False"
-                                    ItemsSource="{Binding TemplateProduits}">
+                                    CurrentCellChanged="dgProduitsLocaux_CurrentCellChanged">
                                     <DataGrid.Columns>
-                                        <DataGridTemplateColumn MinWidth="60" Header="Quantité">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBox
-                                                        x:Name="tbxQuantiteLocal"
-                                                        Style="{StaticResource TBxQteProduit}"
-                                                        Text="{Binding Path=Quantite, Mode=TwoWay}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn
+                                            MinWidth="60"
+                                            Binding="{Binding Quantite}"
+                                            Header="Quantité"
+                                            IsReadOnly="False" />
                                         <DataGridTextColumn
                                             MinWidth="100"
-                                            Binding="{Binding Nom}"
+                                            Binding="{Binding LeProduit.Nom}"
                                             Header="Nom"
                                             IsReadOnly="True" />
                                         <DataGridTextColumn
                                             MinWidth="60"
-                                            Binding="{Binding Prix}"
+                                            Binding="{Binding LeProduit.Prix}"
                                             Header="Prix"
                                             IsReadOnly="True" />
                                         <DataGridTextColumn
                                             MinWidth="50"
-                                            Binding="{Binding Couleur}"
+                                            Binding="{Binding LeProduit.Couleur}"
                                             Header="Couleur"
                                             IsReadOnly="True" />
                                         <DataGridTextColumn
                                             MinWidth="50"
-                                            Binding="{Binding Taille}"
+                                            Binding="{Binding LeProduit.Taille}"
                                             Header="Taille"
                                             IsReadOnly="True" />
                                         <DataGridTextColumn
                                             MinWidth="125"
-                                            Binding="{Binding Description}"
+                                            Binding="{Binding LeProduit.Description}"
                                             Header="Description"
                                             IsReadOnly="True" />
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </ScrollViewer>
 
-                            <TextBlock
-                                x:Name="tbkTotalLocal"
-                                Margin="0,10,0,10"
-                                FontSize="15"
-                                FontWeight="Bold"
-                                Foreground="#FF00634C">
-                                Total : 0 produits pour 0,00 €
-                            </TextBlock>
                             <Button
                                 x:Name="btnAcheterLocal"
-                                Content="Commander 0 produits"
+                                Margin="0,30,0,30"
+                                Click="btnAcheterLocal_Click"
+                                Content="Récapitulatif"
                                 IsEnabled="False"
                                 Style="{StaticResource ButtonsOK}" />
 

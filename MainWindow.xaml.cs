@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -14,11 +15,15 @@ namespace MaquetteBotanic
     {
         public static readonly Brush couleurBotanic = new SolidColorBrush(Color.FromRgb(0, 99, 76));
 
+        public static ObservableCollection<ProduitAchat>? dgItemsCentrale = null;
         public static ObservableCollection<ProduitAchat> produitsCentrale = new ObservableCollection<ProduitAchat>();
         public static string? filtreCouleur = null;
         public static string? filtreTaille = null;
 
-        public static ObservableCollection<ProduitAchat>? dgItems = null;
+        public static ObservableCollection<ProduitAchat>? dgItemsLocaux = null;
+        public static ObservableCollection<ProduitAchat> produitsLocaux = new ObservableCollection<ProduitAchat>();
+        public static string? filtreNom = null;
+        public static string? filtreFournisseur = null;
 
         public MainWindow()
         {
@@ -48,7 +53,45 @@ namespace MaquetteBotanic
 
                 btnsTypes.Children.Add(btn);
             }
+
+            dgItemsLocaux = ProduitAchat.FromListProduit(ApplicationData.Filter(ApplicationData.Instance.Produits, (p) =>
+            {
+                Fournit? fournit = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == p.Id);
+                if (fournit == null)
+                    return false;
+                return fournit.LeFournisseur.Local == true;
+            }));
         }
+        private void Recapitulatif(ObservableCollection<ProduitAchat> produits, bool local)
+        {
+            if (produits == null || produits.Count == 0)
+            {
+                MessageBox.Show(
+                    "Vous devez sélectionner des produits.",
+                    "Erreur",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+                return;
+            }
+
+            RecapitulatifCommande recap = new RecapitulatifCommande(produits, false);
+            if (recap.ShowDialog() == true)
+            {
+                MessageBox.Show(
+                    "La commande a été créée avec succès.",
+                    "Succès",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+                ApplicationData.Instance.Commandes = Commande.Read();
+            }
+        }
+
+        /* ========================================== */
+        /* ===============  Centrale  =============== */
+        /* ========================================== */
+        #region Centrale
 
         private void ButtonType_Click(object sender, RoutedEventArgs e)
         {
@@ -108,14 +151,14 @@ namespace MaquetteBotanic
                         int idCategorie = int.Parse(btn.Name.Substring(6));
 
                         // Mettre à jour les produits filtrés par la catégorie
-                        dgItems = ProduitAchat.FromListProduit(ApplicationData.Filter(ApplicationData.Instance.Produits, (p) =>
+                        dgItemsCentrale = ProduitAchat.FromListProduit(ApplicationData.Filter(ApplicationData.Instance.Produits, (p) =>
                         {
                             return
                                 p.LaCategorie.Id == idCategorie &&
                                 ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) =>
                                     pf.LeProduit.Id == p.Id)?.LeFournisseur.Local == false;
                         }));
-                        dgProduits.ItemsSource = dgItems;
+                        dgProduits.ItemsSource = dgItemsCentrale;
 
                         List<string> couleurs = new List<string>();
                         List<string> tailles = new List<string>();
@@ -173,20 +216,6 @@ namespace MaquetteBotanic
             }
 
             btnAcheter.IsEnabled = produitsCentrale.Count > 0;
-
-            //int nbProduits = produitsCentrale.Aggregate(0, (acc, p) => acc + p.Quantite);
-            //double total = produitsCentrale.Aggregate(0.0, (acc, p) =>
-            //    acc + (p.Quantite * ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) =>
-            //        pf.LeProduit.Id == p.LeProduit.Id)!.PrixAchat)
-            //);
-
-            //tbkTotal.Text = $"Total : {nbProduits} produit{(nbProduits != 1 ? "s" : "")} pour {total:n2} €";
-
-            //if (produitsCentrale.Count > 0)
-            //{
-            //    btnAcheter.Content = $"Commander {nbProduits} produit{(nbProduits != 1 ? "s" : "")}";
-            //    btnAcheter.IsEnabled = produitsCentrale.Count > 0;
-            //}
         }
 
         private void cbCouleur_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -198,7 +227,7 @@ namespace MaquetteBotanic
                 else
                     filtreCouleur = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
             }
-            Filtrer();
+            FiltrerCentrale();
         }
 
         private void cbTaille_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -210,46 +239,85 @@ namespace MaquetteBotanic
                 else
                     filtreTaille = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
             }
-            Filtrer();
+            FiltrerCentrale();
         }
 
-        private void Filtrer()
+        private void FiltrerCentrale()
         {
-            if (dgItems == null)
+            if (dgItemsCentrale == null)
                 return;
 
             if (filtreCouleur == null && filtreTaille == null)
-                dgProduits.ItemsSource = dgItems;
+                dgProduits.ItemsSource = dgItemsCentrale;
 
-            dgProduits.ItemsSource = ApplicationData.Filter(dgItems, (i) =>
+            dgProduits.ItemsSource = ApplicationData.Filter(dgItemsCentrale, (i) =>
                 (filtreCouleur == null || i.LeProduit.Couleur == filtreCouleur) &&
                 (filtreTaille == null || i.LeProduit.Taille == filtreTaille));
         }
 
-        private void Recapitulatif(object sender, RoutedEventArgs e)
+        private void btnAcheter_Click(object sender, RoutedEventArgs e)
         {
-            if (produitsCentrale == null || produitsCentrale.Count == 0)
+            Recapitulatif(produitsCentrale, false);
+        }
+
+        #endregion
+
+        /* ========================================== */
+        /* ===============    Local   =============== */
+        /* ========================================== */
+        #region Local
+
+        private void nomProduit_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            filtreNom = nomProduit.Text;
+            FiltrerLocal();
+        }
+
+        private void nomFournisseur_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            filtreFournisseur = nomFournisseur.Text;
+            FiltrerLocal();
+        }
+
+        private void FiltrerLocal()
+        {
+            if (dgItemsLocaux == null)
+                return;
+
+            if (string.IsNullOrEmpty(filtreNom) && string.IsNullOrEmpty(filtreFournisseur))
             {
-                MessageBox.Show(
-                    "Vous devez sélectionner des produits.",
-                    "Erreur",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
+                dgProduitsLocaux.ItemsSource = new ObservableCollection<ProduitAchat>();
                 return;
             }
 
-            RecapitulatifCommande recap = new RecapitulatifCommande(produitsCentrale, false);
-            if (recap.ShowDialog() == true)
-            {
-                MessageBox.Show(
-                    "La commande a été créée avec succès.",
-                    "Succès",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
-                ApplicationData.Instance.Commandes = Commande.Read();
-            }
+            dgProduitsLocaux.ItemsSource = ApplicationData.Filter(dgItemsLocaux, (produit) => {
+                Fournit? fournit = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == produit.LeProduit.Id);
+
+                return (string.IsNullOrEmpty(filtreNom) || produit.LeProduit.Nom.ToLower().Contains(filtreNom.ToLower())) &&
+                       (string.IsNullOrEmpty(filtreFournisseur) || (fournit?.LeFournisseur.Nom.ToLower().Contains(filtreFournisseur.ToLower()) ?? false));
+            });
         }
+
+        private void dgProduitsLocaux_CurrentCellChanged(object sender, EventArgs e)
+        {
+            foreach (ProduitAchat produit in dgProduitsLocaux.Items)
+            {
+                if (produit.Quantite > 0 && !produitsLocaux.Contains(produit))
+                {
+                    produitsLocaux.Add(produit);
+                }
+                else if (produit.Quantite <= 0 && produitsLocaux.Contains(produit))
+                    produitsLocaux.Remove(produit);
+            }
+
+            btnAcheterLocal.IsEnabled = produitsLocaux.Count > 0;
+        }
+
+        private void btnAcheterLocal_Click(object sender, RoutedEventArgs e)
+        {
+            Recapitulatif(produitsLocaux, true);
+        }
+
+        #endregion
     }
 }
