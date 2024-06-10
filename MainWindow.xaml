@@ -473,7 +473,8 @@
                                 x:Name="dgProduitsCommande"
                                 Height="100"
                                 VerticalAlignment="Top"
-                                AutoGenerateColumns="False">
+                                AutoGenerateColumns="False"
+                                IsEnabled="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn
                                         MinWidth="60"

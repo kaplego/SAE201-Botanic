@@ -73,6 +73,8 @@ namespace MaquetteBotanic
 
             Commande commande = new Commande(ApplicationData.Instance.MagasinActuel, DateTime.Now, null);
             commande.NumModeLivraison = ml.Id;
+            commande.LesProduits = new ObservableCollection<DetailCommande>();
+
             foreach (ProduitAchat pa in lesProduits)
             {
                 Fournit frn = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == pa.LeProduit.Id);
