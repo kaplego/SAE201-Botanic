@@ -15,7 +15,7 @@ namespace MaquetteBotanic
         private DateTime dateCommande;
         private DateTime? dateLivraison;
         private int numModeLivraison;
-        private List<ProduitAchat> lesProduits;
+        private ObservableCollection<DetailCommande> lesProduits;
         private Magasin magasin;
 
         public int Id
@@ -57,7 +57,7 @@ namespace MaquetteBotanic
             }
         }
 
-        public List<ProduitAchat> LesProduits
+        public ObservableCollection<DetailCommande> LesProduits
         {
             get
             {
@@ -109,26 +109,22 @@ namespace MaquetteBotanic
             this.Id = id;
         }
 
-        public Commande(int id, Magasin magasin, DateTime dateCommande, DateTime? dateLivraison, List<ProduitAchat> lesProduits, int NumModeLivraison)
+        public Commande(int id, Magasin magasin, DateTime dateCommande, DateTime? dateLivraison, int NumModeLivraison, ObservableCollection<DetailCommande> produits)
             : this(id, magasin, dateCommande, dateLivraison)
         {
-            this.LesProduits = lesProduits;
             this.NumModeLivraison = NumModeLivraison;
+            this.LesProduits = produits;
         }
 
         public override bool Equals(object? obj)
         {
             return obj is Commande commande &&
-                   this.Id == commande.Id &&
-                   this.DateCommande == commande.DateCommande &&
-                   this.DateLivraison == commande.DateLivraison &&
-                   EqualityComparer<List<ProduitAchat>>.Default.Equals(this.LesProduits, commande.LesProduits) &&
-                   this.NumModeLivraison == commande.NumModeLivraison;
+                   this.Id == commande.Id;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Id, this.DateCommande, this.DateLivraison, this.LesProduits, this.NumModeLivraison);
+            return HashCode.Combine(this.Id, this.DateCommande, this.DateLivraison, this.NumModeLivraison);
         }
 
         public override string? ToString()
@@ -136,24 +132,32 @@ namespace MaquetteBotanic
             return $"ID : {Id} \nDate Commande : {DateCommande} \nDate de Livraison : {DateLivraison}";
         }
 
-        public static ObservableCollection<Commande> Read(Magasin magasin)
+        public static ObservableCollection<Commande> Read(Magasin magasin, ObservableCollection<DetailCommande> detailsCommandes)
         {
             ObservableCollection<Commande> lesCommandes = new ObservableCollection<Commande>();
-            string sql = $"SELECT num_commande, date_commande, date_livraison " +
+            string sql = $"SELECT num_commande, date_commande, date_livraison, num_mode_livraison " +
                 $"FROM commande_achat " +
                 $"WHERE num_magasin = {magasin.Id}";
             DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
+
             foreach (DataRow res in dt.Rows)
             {
                 Commande nouveau = new Commande(
                     int.Parse(res["num_commande"].ToString()!),
                     magasin,
                     DateTime.Parse(res["date_commande"].ToString()!),
-                    string.IsNullOrEmpty(res["date_livraison"].ToString()) ? null : DateTime.Parse(res["date_livraison"].ToString()!)
+                    string.IsNullOrEmpty(res["date_livraison"].ToString()) ? null : DateTime.Parse(res["date_livraison"].ToString()!),
+                    int.Parse(res["num_mode_livraison"].ToString()!),
+                    ApplicationData.Filter(detailsCommandes, (dc) => dc.NumCommande == int.Parse(res["num_commande"].ToString()!))
                 );
                 lesCommandes.Add(nouveau);
             }
             return lesCommandes;
+        }
+
+        public double PrixTotal()
+        {
+            return this.LesProduits.Aggregate(0.0, (acc, p) => acc + p.PrixTotal);
         }
 
         public int Create()
@@ -168,15 +172,15 @@ namespace MaquetteBotanic
 
             int commande_id = int.Parse(dr["num_commande"].ToString()!);
 
-            foreach (ProduitAchat produit in this.LesProduits)
+            foreach (DetailCommande detail in this.LesProduits)
             {
-                Fournit? fournit = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == produit.LeProduit.Id);
+                Fournit? fournit = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == detail.LeProduitAchat.LeProduit.Id);
 
                 if (fournit == null)
                     continue;
 
                 sql = "INSERT INTO detail_commande (num_commande, num_produit, num_fournisseur, quantite_commandee) " +
-                    $"VALUES ({commande_id}, {produit.LeProduit.Id}, {fournit.LeFournisseur.Id}, {produit.Quantite});";
+                    $"VALUES ({commande_id}, {detail.LeProduitAchat.LeProduit.Id}, {fournit.LeFournisseur.Id}, {detail.LeProduitAchat.Quantite});";
                 DataAccess.Instance.SetData(sql);
             }
             return 0;

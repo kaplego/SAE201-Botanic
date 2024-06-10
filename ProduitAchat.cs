@@ -20,6 +20,12 @@ namespace MaquetteBotanic
             this.leProduit = produit;
         }
 
+        public ProduitAchat(Produit produit, int quantite)
+            : this(produit)
+        {
+            this.Quantite = quantite;
+        }
+
         public static ObservableCollection<ProduitAchat> FromListProduit(ObservableCollection<Produit> liste)
         {
             ObservableCollection<ProduitAchat> listeAchat = new ObservableCollection<ProduitAchat>();

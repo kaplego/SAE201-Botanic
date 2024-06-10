@@ -73,7 +73,12 @@ namespace MaquetteBotanic
 
             Commande commande = new Commande(ApplicationData.Instance.MagasinActuel, DateTime.Now, null);
             commande.NumModeLivraison = ml.Id;
-            commande.LesProduits = lesProduits;
+            foreach (ProduitAchat pa in lesProduits)
+            {
+                Fournit frn = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == pa.LeProduit.Id);
+
+                commande.LesProduits.Add(new DetailCommande(commande.Id, frn.LeFournisseur.Id, pa));
+            }
             commande.Create();
             this.DialogResult = true;
         }

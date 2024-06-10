@@ -86,7 +86,7 @@ namespace MaquetteBotanic
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
                 );
-                ApplicationData.Instance.Commandes = Commande.Read(ApplicationData.Instance.MagasinActuel);
+                ApplicationData.Instance.Commandes = Commande.Read(ApplicationData.Instance.MagasinActuel, ApplicationData.Instance.DetailsCommandes);
             }
         }
 
@@ -350,6 +350,14 @@ namespace MaquetteBotanic
                 ((Commande)dgCommandes.SelectedItem).DateLivraison = dpDateLivraison.SelectedDate;
                 ((Commande)dgCommandes.SelectedItem).Update();
             }
+        }
+
+        private void dgCommandes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Commande cmd = ((Commande)dgCommandes.SelectedItem);
+
+            dgProduitsCommande.ItemsSource = cmd.LesProduits;
+            tbkTotalCommande.Text = $"{cmd.LesProduits.Count} produit(s)  |  {cmd.PrixTotal()} €";
         }
 
         #endregion

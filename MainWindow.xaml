@@ -412,7 +412,8 @@
                             Grid.Column="0"
                             Height="100"
                             VerticalAlignment="Top"
-                            AutoGenerateColumns="False">
+                            AutoGenerateColumns="False"
+                            SelectionChanged="dgCommandes_SelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridTextColumn
                                     MinWidth="100"
@@ -454,7 +455,6 @@
                                 IsEnabled="True"
                                 IsTodayHighlighted="True"
                                 SelectedDate="{Binding DateLivraison}"
-                                SelectedDateChanged="dpDateLivraison_SelectedDateChanged"
                                 Style="{StaticResource DatePickerDefault}" />
 
                             <Label Margin="0,20,0,0" Style="{StaticResource TBxText}">
@@ -472,7 +472,31 @@
                             <DataGrid
                                 x:Name="dgProduitsCommande"
                                 Height="100"
-                                VerticalAlignment="Top" />
+                                VerticalAlignment="Top"
+                                AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        MinWidth="60"
+                                        Binding="{Binding LeProduitAchat.Quantite}"
+                                        Header="Quantite" />
+                                    <DataGridTextColumn
+                                        MinWidth="120"
+                                        Binding="{Binding LeProduitAchat.LeProduit.Nom}"
+                                        Header="Nom" />
+                                    <DataGridTextColumn
+                                        MinWidth="60"
+                                        Binding="{Binding PrixUnitaire}"
+                                        Header="Prix unitaire" />
+                                    <DataGridTextColumn
+                                        MinWidth="60"
+                                        Binding="{Binding PrixTotal}"
+                                        Header="Prix total" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <TextBlock x:Name="tbkTotalCommande">
+                                0 produits | 0 €
+                            </TextBlock>
 
                             <Button
                                 x:Name="btnModifierCommande"
