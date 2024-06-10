@@ -1,0 +1,104 @@
+﻿<Window
+    x:Class="MaquetteBotanic.RecapitulatifCommande"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MaquetteBotanic"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="RecapitulatifCommande"
+    Width="800"
+    Height="450"
+    MinWidth="420"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="TBxTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="#FF00634C" />
+        </Style>
+        <Style x:Key="ButtonsOK" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="Background" Value="#FF00634C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="4" />
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="20">
+        <TextBlock Style="{StaticResource TBxTitle}">
+            Récapitulatif de commande
+        </TextBlock>
+        <Separator Margin="0,0,0,30" Background="#FF00634C" />
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <DataGrid x:Name="dgProduits" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        MinWidth="60"
+                        Binding="{Binding Quantite}"
+                        Header="Quantité"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        MinWidth="100"
+                        Binding="{Binding LeProduit.Nom}"
+                        Header="Nom"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        MinWidth="60"
+                        Binding="{Binding LeProduit.Prix}"
+                        Header="Prix"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        MinWidth="50"
+                        Binding="{Binding LeProduit.Couleur}"
+                        Header="Couleur"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        MinWidth="50"
+                        Binding="{Binding LeProduit.Taille}"
+                        Header="Taille"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+
+        <Label Margin="0,30,0,10" Target="{Binding ElementName=cbModesLivraison}">Mode de livraison</Label>
+
+        <ComboBox x:Name="cbModesLivraison" Margin="0,0,0,10" />
+
+        <TextBlock
+            x:Name="tbkTotal"
+            Margin="0,0,0,10"
+            FontSize="15"
+            FontWeight="Bold"
+            Foreground="#FF00634C">
+            Total : 0 produits pour 0.00 €
+        </TextBlock>
+        <Grid>
+            <Button
+                MinWidth="200"
+                HorizontalAlignment="Left"
+                Background="#FFD9D9D9"
+                Content="Annuler"
+                Foreground="Black"
+                IsCancel="True"
+                Style="{StaticResource ButtonsOK}" />
+            <Button
+                x:Name="btnAcheter"
+                MinWidth="200"
+                HorizontalAlignment="Right"
+                Click="btnAcheter_Click"
+                Content="Confirmer"
+                IsDefault="True"
+                Style="{StaticResource ButtonsOK}" />
+        </Grid>
+    </StackPanel>
+</Window>

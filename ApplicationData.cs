@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Automation.Peers;
-using static MaquetteBotanic.Produit;
 
 namespace MaquetteBotanic
 {
     public class ApplicationData
     {
         private static ApplicationData instance;
+        private Utilisateur utilisateurActuel;
+        private Magasin magasinActuel;
+
         private ObservableCollection<TypeProduit> typesProduit;
         private ObservableCollection<Categorie> categories;
-        private ObservableCollection<ProduitAchat> produits;
+        private ObservableCollection<Produit> produits;
+        private ObservableCollection<DetailCommande> detailsCommandes;
         private ObservableCollection<Commande> commandes;
         private ObservableCollection<Fournisseur> fournisseurs;
-        private ObservableCollection<Utilisateur> utilisateurs;
         private ObservableCollection<ModeLivraison> modeLivraisons;
-        private ObservableCollection<Magasin> magasins;
         private ObservableCollection<Fournit> produitsFournits;
 
         public static ApplicationData Instance {
@@ -27,29 +26,34 @@ namespace MaquetteBotanic
         }
 
         public ObservableCollection<TypeProduit> TypesProduit { get => this.typesProduit; set => this.typesProduit = value; }
+        public Utilisateur UtilisateurActuel { get => this.utilisateurActuel; set => this.utilisateurActuel = value; }
+        public Magasin MagasinActuel { get => this.magasinActuel; set => this.magasinActuel = value; }
+
         public ObservableCollection<Categorie> Categories { get => categories; set => categories = value; }
-        public ObservableCollection<ProduitAchat> Produits { get => this.produits; set => this.produits = value; }
+        public ObservableCollection<Produit> Produits { get => this.produits; set => this.produits = value; }
+        public ObservableCollection<DetailCommande> DetailsCommandes { get => this.detailsCommandes; set => this.detailsCommandes = value; }
         public ObservableCollection<Commande> Commandes { get => this.commandes; set => this.commandes = value; }
         public ObservableCollection<Fournisseur> Fournisseurs { get => this.fournisseurs; set => this.fournisseurs = value; }
-        public ObservableCollection<Utilisateur> Utilisateurs { get => this.utilisateurs; set => this.utilisateurs = value; }
         public ObservableCollection<ModeLivraison> ModeLivraisons { get => this.modeLivraisons; set => this.modeLivraisons = value; }
-        public ObservableCollection<Magasin> Magasins { get => this.magasins; set => this.magasins = value; }
         public ObservableCollection<Fournit> ProduitsFournits { get => this.produitsFournits; set => this.produitsFournits = value; }
 
         private ApplicationData()
         {
+            UtilisateurActuel = Utilisateur.Current()!;
+
+            MagasinActuel = Magasin.Current(UtilisateurActuel)!;
+
+            Fournisseurs = Fournisseur.Read();
+            ModeLivraisons = ModeLivraison.Read();
             TypesProduit = TypeProduit.Read();
             Categories = Categorie.Read(TypesProduit);
-            Produits = ProduitAchat.FromListProduit(Produit.Read(Categories));
-            Fournisseurs = Fournisseur.Read();
-            Utilisateurs = Utilisateur.Read();
-            ModeLivraisons = ModeLivraison.Read();
-            Magasins = Magasin.Read();
+            Produits = Produit.Read(Categories);
             ProduitsFournits = Fournit.Read(
-                Magasins,
                 Fournisseurs,
                 Produits
             );
+            DetailsCommandes = DetailCommande.Read(Produits);
+            Commandes = Commande.Read(MagasinActuel, DetailsCommandes);
         }
 
         public delegate bool CallBack<T>(T item);

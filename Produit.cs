@@ -45,8 +45,8 @@ namespace MaquetteBotanic
 
         public static ObservableCollection<Produit> Read(ObservableCollection<Categorie> categories)
         {
+            string sql = "SELECT * FROM produit";
             ObservableCollection<Produit> lesProduits = new ObservableCollection<Produit>();
-            string sql = "SELECT num_produit, num_categorie, nom_produit, couleur_produit, taille_produit, description_produit, prix_vente, num_categorie FROM produit";
             DataTable dt = DataAccess.Instance!.GetData(sql);
             foreach (DataRow res in dt.Rows)
             {
@@ -55,9 +55,9 @@ namespace MaquetteBotanic
                     throw new Exception("La catégorie n'existe pas.");
 
                 Produit nouveau = new Produit(
-                    int.Parse(res["num_produit"].ToString()!), 
+                    int.Parse(res["num_produit"].ToString()!),
                     res["nom_produit"].ToString()!,
-                    double.Parse(res["prix_vente"].ToString()!), 
+                    double.Parse(res["prix_vente"].ToString()!),
                     res["description_produit"].ToString()!,
                     res["couleur_produit"].ToString()!,
                     res["taille_produit"].ToString()!,
@@ -91,6 +91,12 @@ namespace MaquetteBotanic
                          $" couleur_produit='{Couleur}', taille_produit='{Taille}', description_produit='{Description}', prix_vente={Prix}" +
                          $" WHERE num_produit={Id}";
             return DataAccess.Instance.SetData(sql);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Produit produit &&
+                   this.Id == produit.Id;
         }
     }
 }

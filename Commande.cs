@@ -13,10 +13,10 @@ namespace MaquetteBotanic
     {
         private int id;
         private DateTime dateCommande;
-        private DateTime dateLivraison;
+        private DateTime? dateLivraison;
         private int numModeLivraison;
-        private List<ProduitAchat> lesProduits;
-        private int numMagasin;
+        private ObservableCollection<DetailCommande> lesProduits;
+        private Magasin magasin;
 
         public int Id
         {
@@ -44,7 +44,7 @@ namespace MaquetteBotanic
             }
         }
 
-        public DateTime DateLivraison
+        public DateTime? DateLivraison
         {
             get
             {
@@ -57,7 +57,7 @@ namespace MaquetteBotanic
             }
         }
 
-        public List<ProduitAchat> LesProduits
+        public ObservableCollection<DetailCommande> LesProduits
         {
             get
             {
@@ -74,57 +74,57 @@ namespace MaquetteBotanic
         {
             get
             {
-                return this.NumModeLivraison;
+                return this.numModeLivraison;
             }
 
             set
             {
-                this.NumModeLivraison = value;
+                this.numModeLivraison = value;
             }
         }
 
-        public int NumMagasin
+        public Magasin Magasin
         {
             get
             {
-                return this.numMagasin;
+                return this.magasin;
             }
 
             set
             {
-                this.numMagasin = value;
+                this.magasin = value;
             }
         }
 
-        public Commande(int id, DateTime dateCommande, DateTime dateLivraison)
+        public Commande(Magasin magasin, DateTime dateCommande, DateTime? dateLivraison)
         {
-            this.Id = id;
+            this.Magasin = magasin;
             this.DateCommande = dateCommande;
             this.DateLivraison = dateLivraison;
         }
 
-        public Commande(int id, DateTime dateCommande, DateTime dateLivraison, List<ProduitAchat> lesProduits, int NumModeLivraison)
+        public Commande(int id, Magasin magasin, DateTime dateCommande, DateTime? dateLivraison)
+            : this(magasin, dateCommande, dateLivraison)
         {
             this.Id = id;
-            this.DateCommande = dateCommande;
-            this.DateLivraison = dateLivraison;
-            this.LesProduits = lesProduits;
+        }
+
+        public Commande(int id, Magasin magasin, DateTime dateCommande, DateTime? dateLivraison, int NumModeLivraison, ObservableCollection<DetailCommande> produits)
+            : this(id, magasin, dateCommande, dateLivraison)
+        {
             this.NumModeLivraison = NumModeLivraison;
+            this.LesProduits = produits;
         }
 
         public override bool Equals(object? obj)
         {
             return obj is Commande commande &&
-                   this.Id == commande.Id &&
-                   this.DateCommande == commande.DateCommande &&
-                   this.DateLivraison == commande.DateLivraison &&
-                   EqualityComparer<List<ProduitAchat>>.Default.Equals(this.LesProduits, commande.LesProduits) &&
-                   this.NumModeLivraison == commande.NumModeLivraison;
+                   this.Id == commande.Id;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.Id, this.DateCommande, this.DateLivraison, this.LesProduits, this.NumModeLivraison);
+            return HashCode.Combine(this.Id, this.DateCommande, this.DateLivraison, this.NumModeLivraison);
         }
 
         public override string? ToString()
@@ -132,43 +132,72 @@ namespace MaquetteBotanic
             return $"ID : {Id} \nDate Commande : {DateCommande} \nDate de Livraison : {DateLivraison}";
         }
 
-        public static ObservableCollection<Commande> Read()
+        public static ObservableCollection<Commande> Read(Magasin magasin, ObservableCollection<DetailCommande> detailsCommandes)
         {
             ObservableCollection<Commande> lesCommandes = new ObservableCollection<Commande>();
-            string sql = "SELECT num_commande, date_commande, date_livraison FROM Commande";
+            string sql = $"SELECT num_commande, date_commande, date_livraison, num_mode_livraison " +
+                $"FROM commande_achat " +
+                $"WHERE num_magasin = {magasin.Id}";
             DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
+
             foreach (DataRow res in dt.Rows)
             {
                 Commande nouveau = new Commande(
                     int.Parse(res["num_commande"].ToString()!),
+                    magasin,
                     DateTime.Parse(res["date_commande"].ToString()!),
-                    DateTime.Parse(res["date_livraison"].ToString()!)
+                    string.IsNullOrEmpty(res["date_livraison"].ToString()) ? null : DateTime.Parse(res["date_livraison"].ToString()!),
+                    int.Parse(res["num_mode_livraison"].ToString()!),
+                    ApplicationData.Filter(detailsCommandes, (dc) => dc.NumCommande == int.Parse(res["num_commande"].ToString()!))
                 );
                 lesCommandes.Add(nouveau);
             }
             return lesCommandes;
         }
 
+        public double PrixTotal()
+        {
+            return this.LesProduits.Aggregate(0.0, (acc, p) => acc + p.PrixTotal);
+        }
+
         public int Create()
         {
-            string sql = $"INSERT INTO produit (num_magasin, date_commande, date_livraison)"
-                         + $" values ('{NumMagasin}','{DateCommande}','{DateLivraison}'";
-            return DataAccess.Instance.SetData(sql);
+            string sql = $"INSERT INTO commande_achat (num_magasin, date_commande, date_livraison, num_mode_livraison) " +
+                         $"VALUES ('{this.Magasin}','{this.DateCommande}',{(DateLivraison != null ? $"'{DateLivraison}'" : "NULL")},{this.NumModeLivraison}) RETURNING num_commande;";
+            DataTable dt = DataAccess.Instance.GetData(sql);
+            DataRow? dr = dt.Rows[0] ?? null;
+
+            if (dr == null)
+                return -1;
+
+            int commande_id = int.Parse(dr["num_commande"].ToString()!);
+
+            foreach (DetailCommande detail in this.LesProduits)
+            {
+                Fournit? fournit = ApplicationData.Find(ApplicationData.Instance.ProduitsFournits, (pf) => pf.LeProduit.Id == detail.LeProduitAchat.LeProduit.Id);
+
+                if (fournit == null)
+                    continue;
+
+                sql = "INSERT INTO detail_commande (num_commande, num_produit, num_fournisseur, quantite_commandee) " +
+                    $"VALUES ({commande_id}, {detail.LeProduitAchat.LeProduit.Id}, {fournit.LeFournisseur.Id}, {detail.LeProduitAchat.Quantite});";
+                DataAccess.Instance.SetData(sql);
+            }
+            return 0;
         }
 
         public int Delete()
         {
-            string sql = $"DELETE FROM commande" +
+            string sql = $"DELETE FROM commande_achat" +
                          $" WHERE num_commande = {Id}";
             return DataAccess.Instance.SetData(sql);
         }
 
         public int Update()
         {
-            string sql = $"UPDATE commande" +
-                         $" SET date_commande={DateCommande}," +
-                         $" date_livraison='{DateLivraison}'" +
-                         $" WHERE num_commande={Id}";
+            string sql = $"UPDATE commande_achat" +
+                         $" SET date_livraison={(DateLivraison != null ? $"'{DateLivraison?.Month}-{DateLivraison?.Day}-{DateLivraison?.Year}'" : "NULL")}" +
+                         $" WHERE num_commande={this.Id}";
             return DataAccess.Instance.SetData(sql);
         }
     }

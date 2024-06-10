@@ -20,6 +20,12 @@ namespace MaquetteBotanic
             this.leProduit = produit;
         }
 
+        public ProduitAchat(Produit produit, int quantite)
+            : this(produit)
+        {
+            this.Quantite = quantite;
+        }
+
         public static ObservableCollection<ProduitAchat> FromListProduit(ObservableCollection<Produit> liste)
         {
             ObservableCollection<ProduitAchat> listeAchat = new ObservableCollection<ProduitAchat>();
@@ -33,6 +39,12 @@ namespace MaquetteBotanic
         public double PrixTotal()
         {
             return this.Quantite * this.LeProduit.Prix;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ProduitAchat achat &&
+                   EqualityComparer<Produit>.Default.Equals(this.LeProduit, achat.LeProduit);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace MaquetteBotanic
         {
             ObservableCollection<Magasin> lesMagasins = new ObservableCollection<Magasin>();
             string sql = "SELECT num_magasin, nom_magasin, adresse_rue_magasin, adresse_cp_magasin, adresse_ville_magasin, horaire FROM magasin";
-            DataTable dt = DataAccess.Instance!.GetData(sql);
+            DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
             foreach (DataRow res in dt.Rows)
             {
                 Magasin nouveau = new Magasin(
@@ -57,6 +57,28 @@ namespace MaquetteBotanic
                 lesMagasins.Add(nouveau);
             }
             return lesMagasins;
+        }
+
+        public static Magasin? Current(Utilisateur utilisateur)
+        {
+            string sql = "SELECT num_magasin, nom_magasin, adresse_rue_magasin, adresse_cp_magasin, adresse_ville_magasin, horaire " +
+                "FROM magasin " +
+                $"WHERE num_magasin = {utilisateur.NumMagasin}";
+            DataTable dt = DataAccess.Instance?.GetData(sql) ?? new DataTable();
+
+            if (dt.Rows.Count == 0)
+                return null;
+
+            DataRow res = dt.Rows[0];
+
+            return new Magasin(
+                int.Parse(res["num_magasin"].ToString()!),
+                res["nom_magasin"].ToString()!,
+                res["adresse_rue_magasin"].ToString()!,
+                res["adresse_cp_magasin"].ToString()!,
+                res["adresse_ville_magasin"].ToString()!,
+                res["horaire"].ToString()!
+            );
         }
 
         public int Create()
