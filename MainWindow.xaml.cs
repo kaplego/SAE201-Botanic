@@ -162,6 +162,15 @@ namespace MaquetteBotanic
                         }));
                         dgProduits.ItemsSource = dgItemsCentrale;
 
+                        cbCouleur.Items.Clear();
+                        cbTaille.Items.Clear();
+
+                        cbCouleur.Items.Add("Aucun filtre de couleur");
+                        cbTaille.Items.Add("Aucun filtre de taille");
+
+                        cbCouleur.SelectedIndex = 0;
+                        cbTaille.SelectedIndex = 0;
+
                         List<string> couleurs = new List<string>();
                         List<string> tailles = new List<string>();
                         foreach (ProduitAchat produit in dgProduits.ItemsSource)
@@ -224,7 +233,7 @@ namespace MaquetteBotanic
         {
             if (sender is ComboBox cb)
             {
-                if (cb.SelectedIndex == 0)
+                if (cb.SelectedIndex == 0 || cb.SelectedItem == null)
                     filtreCouleur = null;
                 else
                     filtreCouleur = ((ComboBoxItem)cb.SelectedItem).Content.ToString();
@@ -236,7 +245,7 @@ namespace MaquetteBotanic
         {
             if (sender is ComboBox cb)
             {
-                if (cb.SelectedIndex == 0)
+                if (cb.SelectedIndex == 0 || cb.SelectedItem == null)
                     filtreTaille = null;
                 else
                     filtreTaille = ((ComboBoxItem)cb.SelectedItem).Content.ToString();

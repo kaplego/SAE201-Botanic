@@ -253,58 +253,6 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </ScrollViewer>
-
-                            <!--<TextBlock Margin="0,20,0,0" Style="{StaticResource TBxTitle}">
-                                Récapitulatif de commande
-                            </TextBlock>
-                            <Separator Margin="0,0,0,10" Background="#FF00634C" />
-
-                            <ScrollViewer
-                                Margin="0,0,0,0"
-                                HorizontalScrollBarVisibility="Auto"
-                                VerticalScrollBarVisibility="Auto">
-                                <DataGrid
-                                    x:Name="dgProduitsSelect"
-                                    AutoGenerateColumns="False"
-                                    CurrentCellChanged="dgProduits_CurrentCellChanged">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn
-                                            MinWidth="60"
-                                            Binding="{Binding Quantite}"
-                                            Header="Quantité"
-                                            IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                            MinWidth="100"
-                                            Binding="{Binding LeProduit.Nom}"
-                                            Header="Nom"
-                                            IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                            MinWidth="60"
-                                            Binding="{Binding LeProduit.Prix}"
-                                            Header="Prix"
-                                            IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                            MinWidth="50"
-                                            Binding="{Binding LeProduit.Couleur}"
-                                            Header="Couleur"
-                                            IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                            MinWidth="50"
-                                            Binding="{Binding LeProduit.Taille}"
-                                            Header="Taille"
-                                            IsReadOnly="True" />
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </ScrollViewer>
-
-                            <TextBlock
-                                x:Name="tbkTotal"
-                                Margin="0,10,0,10"
-                                FontSize="15"
-                                FontWeight="Bold"
-                                Foreground="#FF00634C">
-                                Total : 0 produits pour 0.00 €
-                            </TextBlock>-->
                             <Button
                                 x:Name="btnAcheter"
                                 Click="btnAcheter_Click"
