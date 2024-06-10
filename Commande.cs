@@ -192,7 +192,7 @@ namespace MaquetteBotanic
         public int Update()
         {
             string sql = $"UPDATE commande_achat" +
-                         $" date_livraison={(DateLivraison != null ? $"'{DateLivraison}'" : "NULL")}" +
+                         $" SET date_livraison={(DateLivraison != null ? $"'{DateLivraison?.Month}-{DateLivraison?.Day}-{DateLivraison?.Year}'" : "NULL")}" +
                          $" WHERE num_commande={this.Id}";
             return DataAccess.Instance.SetData(sql);
         }

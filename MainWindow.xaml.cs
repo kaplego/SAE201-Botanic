@@ -336,27 +336,19 @@ namespace MaquetteBotanic
         /* ========================================== */
         #region Visualiser commmandes
 
-        private void dpDateLivraison_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            btnModifierCommande.IsEnabled = dpDateLivraison.SelectedDate != ((Commande)dgCommandes.SelectedItem).DateLivraison;
-        }
-
         private void btnModifierCommande_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult res = MessageBox.Show(
                 "Voulez-vous enregister les modifications ?",
                 "Enregistrement",
-                MessageBoxButton.YesNoCancel,
+                MessageBoxButton.YesNo,
                 MessageBoxImage.Question
             );
 
             if (res == MessageBoxResult.Yes)
             {
+                ((Commande)dgCommandes.SelectedItem).DateLivraison = dpDateLivraison.SelectedDate;
                 ((Commande)dgCommandes.SelectedItem).Update();
-            }
-            else if (res == MessageBoxResult.No)
-            {
-                dpDateLivraison.SelectedDate = ((Commande)dgCommandes.SelectedItem).DateLivraison;
             }
         }
 

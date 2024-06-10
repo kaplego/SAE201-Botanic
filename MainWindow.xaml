@@ -453,9 +453,9 @@
                                 FirstDayOfWeek="Monday"
                                 IsEnabled="True"
                                 IsTodayHighlighted="True"
+                                SelectedDate="{Binding DateLivraison}"
                                 SelectedDateChanged="dpDateLivraison_SelectedDateChanged"
-                                Style="{StaticResource DatePickerDefault}"
-                                Text="{Binding DateLivraison}" />
+                                Style="{StaticResource DatePickerDefault}" />
 
                             <Label Margin="0,20,0,0" Style="{StaticResource TBxText}">
                                 Mode livraison
@@ -478,7 +478,6 @@
                                 x:Name="btnModifierCommande"
                                 Margin="0,20,0,0"
                                 Click="btnModifierCommande_Click"
-                                IsEnabled="False"
                                 Style="{StaticResource ButtonsOK}">
                                 Enregistrer
                             </Button>
