@@ -163,7 +163,7 @@ namespace MaquetteBotanic
         public int Create()
         {
             string sql = $"INSERT INTO commande_achat (num_magasin, date_commande, date_livraison, num_mode_livraison) " +
-                         $"VALUES ('{this.Magasin}','{this.DateCommande}',{(DateLivraison != null ? $"'{DateLivraison}'" : "NULL")},{this.NumModeLivraison}) RETURNING num_commande;";
+                         $"VALUES ({this.Magasin.Id},'{this.DateCommande}',{(DateLivraison != null ? $"'{DateLivraison}'" : "NULL")},{this.NumModeLivraison}) RETURNING num_commande;";
             DataTable dt = DataAccess.Instance.GetData(sql);
             DataRow? dr = dt.Rows[0] ?? null;
 
