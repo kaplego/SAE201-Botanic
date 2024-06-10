@@ -40,7 +40,6 @@ namespace MaquetteBotanic
             UtilisateurActuel = Utilisateur.Current()!;
 
             MagasinActuel = Magasin.Current(UtilisateurActuel)!;
-            Console.WriteLine(MagasinActuel);
 
             Fournisseurs = Fournisseur.Read();
             ModeLivraisons = ModeLivraison.Read();
@@ -51,6 +50,7 @@ namespace MaquetteBotanic
                 Fournisseurs,
                 Produits
             );
+            Commandes = Commande.Read(MagasinActuel);
         }
 
         public delegate bool CallBack<T>(T item);

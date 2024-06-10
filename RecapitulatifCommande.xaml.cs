@@ -71,8 +71,7 @@ namespace MaquetteBotanic
 
             ModeLivraison ml = cbitem.Tag! as ModeLivraison;
 
-            Commande commande = new Commande(DateTime.Now, null);
-            commande.NumMagasin = ApplicationData.Instance.MagasinActuel.Id;
+            Commande commande = new Commande(ApplicationData.Instance.MagasinActuel, DateTime.Now, null);
             commande.NumModeLivraison = ml.Id;
             commande.LesProduits = lesProduits;
             commande.Create();

@@ -61,6 +61,8 @@ namespace MaquetteBotanic
                     return false;
                 return fournit.LeFournisseur.Local == true;
             }));
+
+            dgCommandes.ItemsSource = ApplicationData.Instance.Commandes;
         }
         private void Recapitulatif(ObservableCollection<ProduitAchat> produits, bool local)
         {
@@ -84,7 +86,7 @@ namespace MaquetteBotanic
                     MessageBoxButton.OK,
                     MessageBoxImage.Information
                 );
-                ApplicationData.Instance.Commandes = Commande.Read();
+                ApplicationData.Instance.Commandes = Commande.Read(ApplicationData.Instance.MagasinActuel);
             }
         }
 
@@ -316,6 +318,37 @@ namespace MaquetteBotanic
         private void btnAcheterLocal_Click(object sender, RoutedEventArgs e)
         {
             Recapitulatif(produitsLocaux, true);
+        }
+
+        #endregion
+
+        /* ========================================== */
+        /* =========  Visualiser commandes  ========= */
+        /* ========================================== */
+        #region Visualiser commmandes
+
+        private void dpDateLivraison_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btnModifierCommande.IsEnabled = dpDateLivraison.SelectedDate != ((Commande)dgCommandes.SelectedItem).DateLivraison;
+        }
+
+        private void btnModifierCommande_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult res = MessageBox.Show(
+                "Voulez-vous enregister les modifications ?",
+                "Enregistrement",
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Question
+            );
+
+            if (res == MessageBoxResult.Yes)
+            {
+                ((Commande)dgCommandes.SelectedItem).Update();
+            }
+            else if (res == MessageBoxResult.No)
+            {
+                dpDateLivraison.SelectedDate = ((Commande)dgCommandes.SelectedItem).DateLivraison;
+            }
         }
 
         #endregion

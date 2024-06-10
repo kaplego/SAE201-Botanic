@@ -72,6 +72,18 @@
                 </Style>
             </Style.Resources>
         </Style>
+        <Style x:Key="DatePickerDefault" TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="0,5,0,5" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="BorderBrush" Value="#FF00634C" />
+            <Setter Property="Background" Value="#FFE6E6E6" />
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="4" />
+                </Style>
+            </Style.Resources>
+        </Style>
         <Style x:Key="SepProduits" TargetType="Separator">
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
@@ -130,7 +142,7 @@
                 Foreground="White"
                 Text="Utilisateur" />
         </Grid>
-        <TabControl Grid.Row="1">
+        <TabControl Grid.Row="1" SelectedIndex="-1">
             <TabItem Header="Commander">
 
                 <Grid>
@@ -446,17 +458,32 @@
                         </TextBlock>
 
                         <DataGrid
+                            x:Name="dgCommandes"
                             Grid.Row="2"
                             Grid.RowSpan="20"
                             Grid.Column="0"
                             Height="100"
                             VerticalAlignment="Top"
-                            d:ItemsSource="{d:SampleData ItemCount=5}" />
+                            AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    MinWidth="100"
+                                    Binding="{Binding DateCommande, StringFormat='dd/MM/yyyy hh:mm'}"
+                                    Header="Date"
+                                    IsReadOnly="True" />
+                                <DataGridTextColumn
+                                    MinWidth="200"
+                                    Binding="{Binding Magasin.Nom}"
+                                    Header="Magasin"
+                                    IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </StackPanel>
                     <StackPanel
                         Grid.Row="1"
                         Grid.Column="1"
-                        Margin="20,20,20,20">
+                        Margin="20,20,20,20"
+                        DataContext="{Binding SelectedItem, ElementName=dgCommandes}">
                         <TextBlock Margin="0,0,0,30" Style="{StaticResource TBxTitle}">
                             Visualiser une commande
                         </TextBlock>
@@ -465,28 +492,48 @@
                             <Label Style="{StaticResource TBxText}">
                                 Date commande
                             </Label>
-                            <TextBox Style="{StaticResource TBxDefault}">
-                                Date de la commande (à modifier programatically)
-                            </TextBox>
-                            <Label Style="{StaticResource TBxText}">
+                            <TextBox
+                                IsEnabled="False"
+                                Style="{StaticResource TBxDefault}"
+                                Text="{Binding DateCommande, StringFormat='dd/MM/yyyy hh:mm'}" />
+
+                            <Label Margin="0,20,0,0" Style="{StaticResource TBxText}">
                                 Date livraison
                             </Label>
-                            <TextBox Style="{StaticResource TBxDefault}">
-                                Date de la livraison (à modifier programatically)
-                            </TextBox>
-                            <Label Style="{StaticResource TBxText}">
+                            <DatePicker
+                                x:Name="dpDateLivraison"
+                                FirstDayOfWeek="Monday"
+                                IsEnabled="True"
+                                IsTodayHighlighted="True"
+                                SelectedDateChanged="dpDateLivraison_SelectedDateChanged"
+                                Style="{StaticResource DatePickerDefault}"
+                                Text="{Binding DateLivraison}" />
+
+                            <Label Margin="0,20,0,0" Style="{StaticResource TBxText}">
                                 Mode livraison
                             </Label>
-                            <TextBox Style="{StaticResource TBxDefault}">
-                                Mode de livraison (à modifier programatically)
-                            </TextBox>
-                            <Label Style="{StaticResource TBxText}">
+                            <TextBox
+                                x:Name="tbxModeLivraison"
+                                IsReadOnly="True"
+                                Style="{StaticResource TBxDefault}"
+                                Text="{Binding ModeLivraison}" />
+
+                            <Label Margin="0,20,0,0" Style="{StaticResource TBxText}">
                                 Liste des produits
                             </Label>
                             <DataGrid
+                                x:Name="dgProduitsCommande"
                                 Height="100"
-                                VerticalAlignment="Top"
-                                d:ItemsSource="{d:SampleData ItemCount=5}" />
+                                VerticalAlignment="Top" />
+
+                            <Button
+                                x:Name="btnModifierCommande"
+                                Margin="0,20,0,0"
+                                Click="btnModifierCommande_Click"
+                                IsEnabled="False"
+                                Style="{StaticResource ButtonsOK}">
+                                Enregistrer
+                            </Button>
                         </StackPanel>
 
                     </StackPanel>
